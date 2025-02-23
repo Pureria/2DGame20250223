@@ -1,5 +1,6 @@
 # Visual Studio関連
 .vs/
+!.vs/config
 *.suo
 *.VC.db
 *.VC.opendb
