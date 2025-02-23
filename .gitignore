@@ -1,7 +1,7 @@
 # Visual Studio関連
 .vs/
 !.vs/config
-*.suo
+#*.suo
 *.VC.db
 *.VC.opendb
 *.ncb
