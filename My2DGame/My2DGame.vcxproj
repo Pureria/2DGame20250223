@@ -135,6 +135,7 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IColliderManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rectangle.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="BoxCollider.hpp" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Timer.h" />

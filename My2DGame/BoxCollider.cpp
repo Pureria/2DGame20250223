@@ -1,9 +1,11 @@
 #include "BoxCollider.hpp"
+#include "GameObject.h"
 
-BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size)
+BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject& owner)
 {
 	_pos = pos;
 	_size = size;
+	_owner = &owner;
 }
 
 BoxCollider::~BoxCollider()
