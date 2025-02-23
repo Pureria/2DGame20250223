@@ -1,0 +1,30 @@
+# Visual Studio関連
+.vs/
+*.suo
+*.VC.db
+*.VC.opendb
+*.ncb
+*.pdb
+
+# ビルドフォルダ
+Debug/
+Release/
+x64/
+x86/
+
+# CMake関連
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# 一時ファイル
+*.obj
+*.o
+*.log
+
+# 実行ファイル・ライブラリ
+*.exe
+*.dll
+*.lib
+*.a
+*.so
