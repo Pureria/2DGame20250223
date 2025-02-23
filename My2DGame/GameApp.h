@@ -1,11 +1,12 @@
 #pragma once
-#include "SFML/Graphics.hpp"
+//#include "SFML/Graphics.hpp"
 #include "WindowManager.h"
+#include "Rectangle.h"
 
 class GameApp
 {
 private:
-	sf::RectangleShape* rectangle = nullptr;
+	Rectangle* rectangle = nullptr;
 	bool _isDebugRender = false;
 
 public:

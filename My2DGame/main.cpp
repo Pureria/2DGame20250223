@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <SFML/Graphics.hpp>
 #include "GameApp.h"
 #include "WindowManager.h"
 
@@ -8,7 +7,6 @@ int main() {
 	//sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
 	WindowManager::Instance().Initialize(sf::VideoMode(800, 600), "My 2D Game");
 	GameApp* gameApp = new GameApp();
-	bool end = false;
 
 	gameApp->Awake();
 	gameApp->Start();
