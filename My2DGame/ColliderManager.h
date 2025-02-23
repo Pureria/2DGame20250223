@@ -1,8 +1,9 @@
 #pragma once
 #include "IColliderManager.cpp"
+#include "Singleton.h"
 #include <vector>
 
-class ColliderManager
+class ColliderManager : public Singleton<ColliderManager>, public IColliderManager
 {
 private:
 	std::vector<std::shared_ptr<BoxCollider>> _colliders;

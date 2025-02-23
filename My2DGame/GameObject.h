@@ -18,6 +18,7 @@ public:
 	void Release();
 	sf::Vector2f GetPosition() const;
 	BoxCollider& GetCollider() const;
+	bool IsMoveAble() const { return _isMovable; }
 };
 
 inline sf::Vector2f GameObject::GetPosition() const { return _pos; }

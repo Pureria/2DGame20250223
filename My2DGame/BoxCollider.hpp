@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/System/Vector2.hpp>
+#include <algorithm>
 
 class GameObject; //ëOï˚êÈåæ
 
@@ -17,8 +18,10 @@ public:
 	bool IsColliding(BoxCollider& other) const;
 	sf::Vector2f GetSize() const;
 	sf::Vector2f GetPosition() const;
-	GameObject* GetOwner() { return _owner; }
+	sf::Vector2f CalculatePushOut(const BoxCollider& other);
+	GameObject* GetOwner();
 };
 
 inline sf::Vector2f BoxCollider::GetPosition() const { return _pos; }
 inline sf::Vector2f BoxCollider::GetSize() const { return _size; }
+inline GameObject* BoxCollider::GetOwner() { return _owner; }
