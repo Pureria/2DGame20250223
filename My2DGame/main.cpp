@@ -6,24 +6,24 @@ int main() {
 	//ウィンドウを作成
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
 	GameApp* gameApp = new GameApp(window);
-	
+	bool end = false;
+
 	gameApp->Awake();
 	gameApp->Start();
 
 	//メインループ
 	while (window.isOpen())
-	{
-		//コードのコメント追加
-		
-		sf::Event event;
+	{		
+		sf::Event event; //イベントを管理するクラス
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
 				window.close();
-				break;
+				end = true;
 			}
 		}
+		if (end) break;
 
 		gameApp->Update();
 		gameApp->LateUpdate();
