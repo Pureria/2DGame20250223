@@ -1,2 +1,7 @@
-﻿  main.cpp
-  My2DGame.vcxproj -> P:\Project\My2DGame\x64\Debug\My2DGame.exe
+﻿  BoxCollider.cpp
+  ColliderManager.cpp
+  GameApp.cpp
+  IColliderManager.cpp
+  main.cpp
+  コードを生成中...
+  My2DGame.vcxproj -> P:\GitHub\2DGame20250223\My2DGame\x64\Debug\My2DGame.exe
