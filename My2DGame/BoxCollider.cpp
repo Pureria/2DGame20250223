@@ -1,15 +1,25 @@
+#pragma once
 #include "BoxCollider.hpp"
 #include "GameObject.h"
+#include "ColliderManager.h"
 
-BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject& owner)
+BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner)
 {
 	_pos = pos;
 	_size = size;
-	_owner = &owner;
+	_owner = owner;
+	
 }
 
 BoxCollider::~BoxCollider()
 {
+	
+}
+
+void BoxCollider::Initialize()
+{
+	//コライダーマネージャーに自分を追加
+	ColliderManager::Instance().AddCollider(shared_from_this());
 }
 
 void BoxCollider::DebugDraw()
@@ -28,10 +38,10 @@ bool BoxCollider::IsColliding(BoxCollider& other) const
 	sf::Vector2f otherSize = other.GetSize();
 
 	//自分の位置と相手の位置を比較して当たっているか判定
-	if (_pos.x < otherPos.x + otherSize.x &&
-		_pos.x + _size.x > otherPos.x &&
-		_pos.y < otherPos.y + otherSize.y &&
-		_pos.y + _size.y > otherPos.y)
+	if (_pos.x < otherPos.x + otherSize.x &&	//自分の右端が相手の左端よりも左にある
+		_pos.x + _size.x > otherPos.x &&		//自分の左端が相手の右端よりも右にある
+		_pos.y < otherPos.y + otherSize.y &&	//自分の下端が相手の上端よりも上にある
+		_pos.y + _size.y > otherPos.y)			//自分の上端が相手の下端よりも下にある
 	{
 		return true;
 	}
@@ -82,4 +92,10 @@ sf::Vector2f BoxCollider::CalculatePushOut(const BoxCollider& other)
 			return sf::Vector2f(0, overlapY);
 		}
 	}
+}
+
+void BoxCollider::Release()
+{
+	//コライダーマネージャーから自分を削除
+	ColliderManager::Instance().RemoveCollider(shared_from_this());
 }

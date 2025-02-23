@@ -1,20 +1,16 @@
 #include "GameObject.h"
 #include "BoxCollider.hpp"
 
-GameObject::GameObject(sf::Vector2f pos, sf::Vector2f size, bool isMovable)
+GameObject::GameObject(sf::Vector2f pos, sf::Vector2f size, bool isMovable):
+	_pos(pos),
+	_isMovable(isMovable)
 {
-	_pos = pos;
-	_collider = new BoxCollider(pos, size, *this);
-	_isMovable = isMovable;
+	_collider = std::make_shared<BoxCollider>(pos, size, this);
+	_collider->Initialize();
 }
 
 GameObject::~GameObject()
 {
-	if (_collider != nullptr)
-	{
-		delete _collider;
-		_collider = nullptr;
-	}
 }
 
 void GameObject::Move(sf::Vector2f delta)
@@ -31,11 +27,5 @@ void GameObject::SetPosition(sf::Vector2f pos)
 
 void GameObject::Release()
 {
-	if (_collider != nullptr)
-	{
-		delete _collider;
-		_collider = nullptr;
-	}
-
-	delete this;
+	_collider->Release();
 }

@@ -29,8 +29,6 @@ bool Rectangle::Release()
 		_rectangle = nullptr; //ポインタをnullptrに
 	}
 
-	delete this; //自身を削除
-
 	return true;
 }
 

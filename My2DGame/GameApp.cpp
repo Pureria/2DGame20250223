@@ -1,8 +1,9 @@
 #include "GameApp.h"
+#include "BoxCollider.hpp"
 
 GameApp::GameApp()
 {
-	rectangle = nullptr;
+	rec1 = nullptr;
 	_isDebugRender = false;
 }
 
@@ -19,31 +20,37 @@ bool GameApp::Awake()
 bool GameApp::Start()
 {
 	//ŽlŠpŒ`‚ðì¬
-	rectangle = new Rectangle(sf::Vector2f(300, 100));
-	rectangle->SetPosition(sf::Vector2f(0, 0));
-	rectangle->SetFillColor(sf::Color::Red);
+	//obj1 = new GameObject(sf::Vector2f(100, 100), sf::Vector2f(100, 100), true);
+	obj1 = std::make_shared<GameObject>(sf::Vector2f(100, 100), sf::Vector2f(100, 100), true);
+	rec1 = new Rectangle(obj1->GetCollider()->GetSize());
+	rec1->SetPosition(obj1->GetPosition());
+	rec1->SetFillColor(sf::Color::Red);
+
+	//obj2 = new GameObject(sf::Vector2f(500, 100), sf::Vector2f(100, 100), true);
+	obj2 = std::make_shared<GameObject>(sf::Vector2f(500, 100), sf::Vector2f(100, 100), true);
+	rec2 = new Rectangle(obj2->GetCollider()->GetSize());
+	rec2->SetPosition(obj2->GetPosition());
+	rec2->SetFillColor(sf::Color::Green);
 
 	return true;
 }
 
 bool GameApp::Update()
 {
-	sf::Vector2f pos = rectangle->GetPosition();
+	sf::Vector2f pos = obj1->GetPosition();
 	pos.x += 0.05f;
-	if (pos.x > 800)
-	{
-		pos.x = 0;
-		rectangle->SetFillColor(sf::Color::Yellow);
-	}
+	obj1->SetPosition(pos);
+	rec1->SetPosition(obj1->GetPosition());
 
-	pos.y += 0.05f;
-	if (pos.y > 600)
-	{
-		pos.y = 0;
-		rectangle->SetFillColor(sf::Color::Red);
-	}
+	sf::Vector2f pos2 = obj2->GetPosition();
+	pos2.x -= 0.05f;
+	obj2->SetPosition(pos2);
+	rec2->SetPosition(obj2->GetPosition());
 
-	rectangle->SetPosition(pos);
+	if (pos.x + obj1->GetCollider()->GetSize().x >= pos2.x)
+	{
+		int hoge = 0;
+	}
 
 	return true;
 }
@@ -57,7 +64,8 @@ bool GameApp::Render()
 {
 	WindowManager::Instance().GetWindow().clear(sf::Color::Blue);
 
-	rectangle->Render();
+	rec1->Render();
+	rec2->Render();
 
 	return true;
 }
@@ -69,10 +77,22 @@ bool GameApp::RederDebug()
 
 bool GameApp::Release()
 {
-	if (rectangle != nullptr)
+	if (rec1 != nullptr)
 	{
-		rectangle->Release();
-		rectangle = nullptr;
+		rec1->Release();
+		delete rec1;
+		rec1 = nullptr;
 	}
+
+	if (rec2 != nullptr)
+	{
+		rec2->Release();
+		delete rec2;
+		rec2 = nullptr;
+	}
+
+	obj1->Release();
+	obj2->Release();
+
 	return true;
 }

@@ -1,13 +1,14 @@
 #pragma once
 #include "SFML/System/Vector2.hpp"
+#include <memory>
 
 class BoxCollider; //ëOï˚êÈåæ
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 private:
 	sf::Vector2f _pos;
-	BoxCollider* _collider;
+	std::shared_ptr<BoxCollider> _collider;
 	bool _isMovable;
 
 public:
@@ -17,10 +18,10 @@ public:
 	void SetPosition(sf::Vector2f pos);
 	void Release();
 	sf::Vector2f GetPosition() const;
-	BoxCollider& GetCollider() const;
+	std::shared_ptr<BoxCollider> GetCollider() const;
 	bool IsMoveAble() const { return _isMovable; }
 };
 
 inline sf::Vector2f GameObject::GetPosition() const { return _pos; }
-inline BoxCollider& GameObject::GetCollider() const { return *_collider; }
+inline std::shared_ptr<BoxCollider> GameObject::GetCollider() const { return _collider; }
 

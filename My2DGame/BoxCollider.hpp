@@ -1,20 +1,23 @@
 #pragma once
 #include <SFML/System/Vector2.hpp>
 #include <algorithm>
+#include <memory>
 
 class GameObject; //ëOï˚êÈåæ
 
-class BoxCollider
+class BoxCollider : public std::enable_shared_from_this<BoxCollider>
 {
 private:
 	GameObject* _owner;
 	sf::Vector2f _pos, _size;
 
 public:
-	BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject& owner);
+	BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner);
 	~BoxCollider();
+	void Initialize();
 	void DebugDraw();
 	void SetPosition(sf::Vector2f pos);
+	void Release();
 	bool IsColliding(BoxCollider& other) const;
 	sf::Vector2f GetSize() const;
 	sf::Vector2f GetPosition() const;

@@ -1,12 +1,21 @@
+#pragma once
 #include <iostream>
 #include "GameApp.h"
 #include "WindowManager.h"
 #include "Timer.h"
+#include "ColliderManager.h"
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 
 int main() {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	//ウィンドウを作成
 	//sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
 	WindowManager::Instance().Initialize(sf::VideoMode(800, 600), "My 2D Game");
+	ColliderManager::Instance();
 	GameApp* gameApp = new GameApp();
 	Timer::Instance();
 
@@ -21,6 +30,9 @@ int main() {
 
 		//時間の更新
 		Timer::Instance().Update();
+		
+		//コライダーの更新
+		ColliderManager::Instance().Update();
 
 		//ゲームの更新
 		gameApp->Update();
@@ -37,7 +49,11 @@ int main() {
 	//メモリの解放
 	gameApp->Release();
 	WindowManager::Instance().Release();
-	delete gameApp;
+	if (gameApp != nullptr)
+	{
+		delete gameApp;
+		gameApp = nullptr;
+	}
 
 	//終わったらコンソールにメッセージを表示
 	std::cout << "Game Finish!!" << std::endl;
