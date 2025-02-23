@@ -138,6 +138,7 @@
     <ClCompile Include="IColliderManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
