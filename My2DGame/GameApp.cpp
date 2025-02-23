@@ -37,7 +37,7 @@ bool GameApp::LateUpdate()
 
 bool GameApp::Render()
 {
-	
+	_window.clear(sf::Color::Blue);
 	_window.draw(*rectangle);
 
 	return true;

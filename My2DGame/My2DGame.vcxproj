@@ -137,12 +137,14 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="IColliderManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxCollider.hpp" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

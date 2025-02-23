@@ -1,49 +1,39 @@
 #include <iostream>
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #include "GameApp.h"
+#include "WindowManager.h"
 
 int main() {
 	//ウィンドウを作成
-	sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
-	GameApp* gameApp = new GameApp(window);
+	//sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
+	WindowManager::Instance().Initialize(sf::VideoMode(800, 600), "My 2D Game");
+	GameApp* gameApp = new GameApp(WindowManager::Instance().GetWindow());
 	bool end = false;
 
 	gameApp->Awake();
 	gameApp->Start();
 
 	//メインループ
-	while (window.isOpen())
+	while (WindowManager::Instance().IsOpen())
 	{		
-		sf::Event event; //イベントを管理するクラス
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-			{
-				window.close();
-				end = true;
-			}
-		}
-		if (end) break;
+		//ウィンドウのイベントをチェック
+		if (!WindowManager::Instance().CheckWindowEvent()) break;
 
 		gameApp->Update();
 		gameApp->LateUpdate();
-
-		//ウィンドウのクリア
-		window.clear(sf::Color::Blue);
-
 		gameApp->Render();
-
 		if (gameApp->IsDebugRender())
 			gameApp->RederDebug();
 
 		//描画した内容をウィンドウに反映
-		window.display();
+		WindowManager::Instance().WindowUpdate();
 
 	}
 
 	
 	//メモリの解放
 	gameApp->Release();
+	WindowManager::Instance().Release();
 	delete gameApp;
 
 	//終わったらコンソールにメッセージを表示
