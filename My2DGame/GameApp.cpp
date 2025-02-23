@@ -1,9 +1,9 @@
 #include "GameApp.h"
 
-GameApp::GameApp(sf::RenderWindow& win) :_window(win)
+GameApp::GameApp()
 {
+	rectangle = nullptr;
 	_isDebugRender = false;
-	//rectangle = new sf::RectangleShape(sf::Vector2f(300, 100));
 }
 
 GameApp::~GameApp()
@@ -37,8 +37,8 @@ bool GameApp::LateUpdate()
 
 bool GameApp::Render()
 {
-	_window.clear(sf::Color::Blue);
-	_window.draw(*rectangle);
+	WindowManager::Instance().GetWindow().clear(sf::Color::Blue);
+	WindowManager::Instance().GetWindow().draw(*rectangle);
 
 	return true;
 }

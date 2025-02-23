@@ -1,15 +1,15 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
+#include "WindowManager.h"
 
 class GameApp
 {
 private:
-	sf::RenderWindow& _window;
-	sf::RectangleShape* rectangle;
-	bool _isDebugRender;
+	sf::RectangleShape* rectangle = nullptr;
+	bool _isDebugRender = false;
 
 public:
-	GameApp(sf::RenderWindow& win);
+	GameApp();
 	~GameApp();
 	bool Awake();
 	bool Start();

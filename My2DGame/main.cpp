@@ -7,7 +7,7 @@ int main() {
 	//ウィンドウを作成
 	//sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
 	WindowManager::Instance().Initialize(sf::VideoMode(800, 600), "My 2D Game");
-	GameApp* gameApp = new GameApp(WindowManager::Instance().GetWindow());
+	GameApp* gameApp = new GameApp();
 	bool end = false;
 
 	gameApp->Awake();
