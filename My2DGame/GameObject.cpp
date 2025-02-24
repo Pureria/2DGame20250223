@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "BoxCollider.hpp"
+#include "BoxCollider.h"
 
 GameObject::GameObject(sf::Vector2f pos, sf::Vector2f size, bool isMovable):
 	_pos(pos),

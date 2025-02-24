@@ -1,5 +1,5 @@
 #pragma once
-#include "BoxCollider.hpp"
+#include "BoxCollider.h"
 #include "GameObject.h"
 #include "ColliderManager.h"
 

@@ -1,5 +1,5 @@
 #include "GameApp.h"
-#include "BoxCollider.hpp"
+#include "BoxCollider.h"
 
 GameApp::GameApp()
 {
