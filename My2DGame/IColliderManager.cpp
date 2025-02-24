@@ -1,8 +1,8 @@
 #include <memory>
-#include "BoxCollider.hpp"
-#include "Singleton.h"
 
-class IColliderManager : Singleton<IColliderManager>
+class BoxCollider;
+
+class IColliderManager
 {
 	public:
 		virtual void AddCollider(std::shared_ptr<BoxCollider> collider) = 0;

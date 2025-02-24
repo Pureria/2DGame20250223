@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include <vector>
 
-class ColliderManager : public Singleton<ColliderManager>
+class ColliderManager : public Singleton<ColliderManager>, public IColliderManager
 {
 private:
 	std::vector<std::shared_ptr<BoxCollider>> _colliders;
@@ -13,9 +13,9 @@ private:
 public:
 	ColliderManager();
 	~ColliderManager();
-	void AddCollider(std::shared_ptr<BoxCollider> collider);
-	void RemoveCollider(std::shared_ptr<BoxCollider> collider);
-	void Update();
+	void AddCollider(std::shared_ptr<BoxCollider> collider) override;
+	void RemoveCollider(std::shared_ptr<BoxCollider> collider) override;
+	void Update() override;
 
 	bool Release() override;
 };

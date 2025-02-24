@@ -1,5 +1,6 @@
 #include "ColliderManager.h"
 #include "GameObject.h"
+#include "BoxCollider.hpp"
 
 ColliderManager::ColliderManager()
 {
