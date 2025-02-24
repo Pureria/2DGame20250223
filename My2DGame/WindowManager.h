@@ -15,6 +15,7 @@ public:
 	bool Release() override;
 
 	sf::RenderWindow& GetWindow() const;
+	sf::Vector2u GetWindowSize() const;
 };
 
 inline sf::RenderWindow& WindowManager::GetWindow() const
@@ -25,4 +26,9 @@ inline sf::RenderWindow& WindowManager::GetWindow() const
 inline bool WindowManager::IsOpen() const
 {
 	return _window.isOpen();
+}
+
+inline sf::Vector2u WindowManager::GetWindowSize() const
+{
+	return _window.getSize();
 }
