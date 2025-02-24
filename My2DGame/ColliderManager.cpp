@@ -73,4 +73,8 @@ void ColliderManager::HandleCollision(std::shared_ptr<BoxCollider> colliderA, st
 		objB->AddPosition(-pushOut);
 	}
 	// どちらも動かせない場合は何もしない
+
+	// 衝突時のコールバックを呼び出す
+	colliderA->OnCollision(objB);
+	colliderB->OnCollision(objA);
 }
