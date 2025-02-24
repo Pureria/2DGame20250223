@@ -4,6 +4,7 @@
 #include "WindowManager.h"
 #include "Timer.h"
 #include "ColliderManager.h"
+#include "DynamicBodyManager.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -16,6 +17,7 @@ int main() {
 	//sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
 	WindowManager::Instance().Initialize(sf::VideoMode(800, 600), "My 2D Game");
 	ColliderManager::Instance();
+	DynamicBodyManager::Instance();
 	GameApp* gameApp = new GameApp();
 	Timer::Instance();
 
@@ -31,6 +33,9 @@ int main() {
 		//時間の更新
 		Timer::Instance().Update();
 		
+		//ダイナミックボディの更新
+		DynamicBodyManager::Instance().Update();
+
 		//コライダーの更新
 		ColliderManager::Instance().Update();
 
@@ -49,6 +54,7 @@ int main() {
 	//メモリの解放
 	gameApp->Release();
 	WindowManager::Instance().Release();
+	DynamicBodyManager::Instance().Release();
 	ColliderManager::Instance().Release();
 	Timer::Instance().Release();
 	if (gameApp != nullptr)

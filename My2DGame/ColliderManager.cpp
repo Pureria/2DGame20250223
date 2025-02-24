@@ -59,18 +59,18 @@ void ColliderManager::HandleCollision(std::shared_ptr<BoxCollider> colliderA, st
 	if (isMoveA && isMoveB)
 	{
 		// —¼•û“®‚©‚¹‚éê‡
-		objA->Move(pushOut / 0.5f);
-		objB->Move(-pushOut / 0.5f);
+		objA->AddPosition(pushOut / 0.5f);
+		objB->AddPosition(-pushOut / 0.5f);
 	}
 	else if (isMoveA)
 	{
 		// A‚¾‚¯“®‚©‚¹‚éê‡
-		objA->Move(pushOut);
+		objA->AddPosition(pushOut);
 	}
 	else if (isMoveB)
 	{
 		// B‚¾‚¯“®‚©‚¹‚éê‡
-		objB->Move(-pushOut);
+		objB->AddPosition(-pushOut);
 	}
 	// ‚Ç‚¿‚ç‚à“®‚©‚¹‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
 }

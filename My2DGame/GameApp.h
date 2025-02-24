@@ -10,9 +10,11 @@ class GameApp
 private:
 	Rectangle* rec1 = nullptr;
 	Rectangle* rec2 = nullptr;
+	Rectangle* floorRec = nullptr;
 
 	GameObject* obj1 = nullptr;
 	GameObject* obj2 = nullptr;
+	GameObject* floorObj = nullptr;
 
 	bool _isDebugRender = false;
 

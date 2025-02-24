@@ -1,9 +1,9 @@
 #include "GameApp.h"
 #include "BoxCollider.h"
+#include "DynamicBody.h"
 
 GameApp::GameApp()
 {
-	rec1 = nullptr;
 	_isDebugRender = false;
 }
 
@@ -31,24 +31,59 @@ bool GameApp::Start()
 	rec2->SetPosition(obj2->GetPosition());
 	rec2->SetFillColor(sf::Color::Green);
 
+	floorObj = new GameObject(sf::Vector2f(0, 500), sf::Vector2f(800, 100), false);
+	floorRec = new Rectangle(floorObj->GetCollider()->GetSize());
+	floorRec->SetPosition(floorObj->GetPosition());
+	floorRec->SetFillColor(sf::Color::White);
+
 	return true;
 }
 
 bool GameApp::Update()
 {
-	sf::Vector2f pos = obj1->GetPosition();
-	pos.x += 0.05f;
-	obj1->SetPosition(pos);
+	
+	sf::Vector2f velo = sf::Vector2f(1.0f, 0.0f);
+	//veloの正規化
+	float length = std::sqrt(velo.x * velo.x + velo.y * velo.y);
+	velo.x /= length;
+	velo.y /= length;
+	velo *= 0.1f; //スピードを1.0にする
+	velo.y = obj1->GetDynamicBody()->GetVelocity().y;
+	obj1->Move(velo, ForceMode::SET);
+
+	velo = sf::Vector2f(-1.0f, 0.0f);
+	length = std::sqrt(velo.x * velo.x + velo.y * velo.y);
+	velo.x /= length;
+	velo.y /= length;
+	velo *= 0.02f; //スピードを1.0にする
+	velo.y = obj2->GetDynamicBody()->GetVelocity().y;
+	obj2->Move(velo, ForceMode::SET);
+
 	rec1->SetPosition(obj1->GetPosition());
-
-	sf::Vector2f pos2 = obj2->GetPosition();
-	pos2.x -= 0.05f;
-	obj2->SetPosition(pos2);
 	rec2->SetPosition(obj2->GetPosition());
+	floorRec->SetPosition(floorObj->GetPosition());
 
-	if (pos.x + obj1->GetCollider()->GetSize().x >= pos2.x)
+	//obj1とobj2が画面端まで行ったら反対側へSetPositionで移動するように
+	bool outObj = false;
+	if (obj1->GetPosition().x > 800) outObj = true;
+	if (obj1->GetPosition().x + obj1->GetCollider()->GetSize().x < 0) outObj = true;
+	if (obj1->GetPosition().y > 500) outObj = true;
+
+	if (outObj)
 	{
-		int hoge = 0;
+		obj1->SetPosition(sf::Vector2f(0, 0));
+		obj1->Move(sf::Vector2f(0, 0), ForceMode::SET);
+	}
+
+	outObj = false;
+	if (obj2->GetPosition().x > 800) outObj = true;
+	if (obj2->GetPosition().x + obj2->GetCollider()->GetSize().x < 0) outObj = true;
+	if (obj2->GetPosition().y > 500) outObj = true;
+
+	if (outObj)
+	{
+		obj2->SetPosition(sf::Vector2f(600, 0));
+		obj2->Move(sf::Vector2f(0, 0), ForceMode::SET);
 	}
 
 	return true;
@@ -65,6 +100,7 @@ bool GameApp::Render()
 
 	rec1->Render();
 	rec2->Render();
+	floorRec->Render();
 
 	return true;
 }
@@ -76,27 +112,33 @@ bool GameApp::RederDebug()
 
 bool GameApp::Release()
 {
-	if (rec1 != nullptr)
-	{
-		rec1->Release();
-		delete rec1;
-		rec1 = nullptr;
-	}
+	/********Rectangleの解放********/
+	rec1->Release();
+	delete rec1;
+	rec1 = nullptr;
 
-	if (rec2 != nullptr)
-	{
-		rec2->Release();
-		delete rec2;
-		rec2 = nullptr;
-	}
+	rec2->Release();
+	delete rec2;
+	rec2 = nullptr;
+		
+	floorRec->Release();
+	delete floorRec;
+	floorRec = nullptr;
+	/*******************************/
 
+	/******GameObjectの解放************/
 	obj1->Release();
-	obj2->Release();
-
-	//obj1.reset();
-	//obj2.reset();
 	delete obj1;
+	obj1 = nullptr;
+
+	obj2->Release();
 	delete obj2;
+	obj2 = nullptr;
+
+	floorObj->Release();
+	delete floorObj;
+	floorObj = nullptr;
+	/*********************************/
 
 	return true;
 }

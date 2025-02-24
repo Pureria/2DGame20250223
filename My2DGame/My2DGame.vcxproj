@@ -135,6 +135,7 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
+    <ClCompile Include="DynamicBodyManager.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IColliderManager.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="DynamicBody.h" />
+    <ClInclude Include="DynamicBodyManager.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Rectangle.h" />
