@@ -12,8 +12,7 @@ BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner)
 }
 
 BoxCollider::~BoxCollider()
-{
-	
+{	
 }
 
 void BoxCollider::Initialize()

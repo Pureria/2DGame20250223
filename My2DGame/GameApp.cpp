@@ -9,7 +9,6 @@ GameApp::GameApp()
 
 GameApp::~GameApp()
 {
-	Release();
 }
 
 bool GameApp::Awake()
@@ -93,6 +92,9 @@ bool GameApp::Release()
 
 	obj1->Release();
 	obj2->Release();
+
+	obj1.reset();
+	obj2.reset();
 
 	return true;
 }

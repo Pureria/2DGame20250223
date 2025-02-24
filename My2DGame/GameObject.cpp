@@ -28,4 +28,5 @@ void GameObject::SetPosition(sf::Vector2f pos)
 void GameObject::Release()
 {
 	_collider->Release();
+	_collider.reset();
 }
