@@ -56,12 +56,8 @@ public:
 	template<typename T>
 	bool TryGetComponent(std::shared_ptr<T>& outComponent)
 	{
-		auto it = _Components.find(typeid(T));
-		if (it != _Components.end())
-		{
-			outComponent = std::dynamic_pointer_cast<T>(it->second);
-			return true;
-		}
+		outComponent = GetComponent<T>();
+		if (outComponent != nullptr) return true;
 		return false;
 	}
 
