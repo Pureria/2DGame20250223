@@ -1,5 +1,8 @@
+#pragma once
 #include "DynamicBody.h"
+#include "DynamicBodyManager.h"
 #include "GameObject.h"
+#include "Timer.h"
 
 DynamicBody::DynamicBody(float gravityScale, GameObject* owner) :
 	_owner(owner),
@@ -34,6 +37,10 @@ void DynamicBody::DebugDraw()
 }
 
 void DynamicBody::Update()
+{	
+}
+
+void DynamicBody::SystemUpdate()
 {
 	if (_isStatic) return;
 

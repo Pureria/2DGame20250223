@@ -1,43 +1,84 @@
 #include "GameObject.h"
+#include "Component.h"
 
-GameObject::GameObject(sf::Vector2f pos, sf::Vector2f size, bool isMovable):
+GameObject::GameObject(sf::Vector2f pos, sf::Vector2f size):
 	_pos(pos),
-	_isMovable(isMovable)
-{
-	_collider = std::make_shared<BoxCollider>(pos, size, this);
-	_dynamicBody = std::make_shared<DynamicBody>(0.05f, this, !isMovable);
-
-	_collider->Initialize();
-	_dynamicBody->Initialize();
-}
+	_nextSetPosCBID(0)
+{ }
 
 GameObject::~GameObject()
 {
 }
 
+void GameObject::Update()
+{
+	for (auto& component : _Components)
+	{
+		component.second->Update();
+	}
+}
+
+void GameObject::Render()
+{
+}
+
+void GameObject::RenderDebug()
+{
+	for (auto& component : _Components)
+	{
+		component.second->DebugDraw();
+	}
+}
+
+void GameObject::Release()
+{
+	for (auto& component : _Components)
+	{
+		component.second->Release();
+	}
+	_Components.clear();
+}
+
+int GameObject::AddSetPositionCallback(SetPositionCallback callback)
+{
+	int id = _nextSetPosCBID++;
+	_SetPositionCallbacks[id] = callback;
+	return id;
+}
+
+void GameObject::RemoveSetPositionCallback(int id)
+{
+	auto it = _SetPositionCallbacks.find(id);
+	if (it != _SetPositionCallbacks.end())
+	{
+		_SetPositionCallbacks.erase(it);
+	}
+}
+
 void GameObject::AddPosition(sf::Vector2f delta)
 {
 	_pos += delta;
-	_collider->SetPosition(_pos);
+	for (auto& callback : _SetPositionCallbacks)
+	{
+		callback.second(_pos);
+	}
 }
 
 void GameObject::SetPosition(sf::Vector2f pos)
 {
 	_pos = pos;
-	_collider->SetPosition(_pos);
+	for (auto& callback : _SetPositionCallbacks)
+	{
+		callback.second(_pos);
+	}
 }
+
+/*  ‰º‚ÍŒã‚ÅÁ‚·  */
+/*
 
 void GameObject::Move(sf::Vector2f dir, ForceMode mode)
 {
 	if (!_isMovable) return;
 	_dynamicBody->SetVelocity(dir, mode);
 }
-
-void GameObject::Release()
-{
-	_collider->Release();
-	_dynamicBody->Release();
-
-	_collider.reset();
-	_dynamicBody.reset();
-}
+*/

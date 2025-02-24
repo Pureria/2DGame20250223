@@ -2,8 +2,9 @@
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 #include <cmath>
-#include "Timer.h"
-#include "DynamicBodyManager.h"
+
+//#include "DynamicBodyManager.h"
+#include "Component.h"
 
 class GameObject; //ëOï˚êÈåæ
 const float GRAVITY = 9.8f;
@@ -15,7 +16,7 @@ enum class ForceMode
 	SET
 };
 
-class DynamicBody : public std::enable_shared_from_this<DynamicBody>
+class DynamicBody : public std::enable_shared_from_this<DynamicBody>, public Component
 {
 private:
 	GameObject* _owner;
@@ -30,10 +31,13 @@ public:
 	DynamicBody(float gravityScale, GameObject* owner);
 	DynamicBody(float gravityScale, GameObject* owner, bool isStatic);
 	~DynamicBody();
-	void Initialize();
-	void DebugDraw();
-	void Update();
-	void Release();
+
+	void Initialize() override;
+	void DebugDraw() override;
+	void Update() override;
+	void Release() override;
+
+	void SystemUpdate();
 
 	void SetGravityScale(float gravityScale);
 	void SetVelocity(sf::Vector2f velocity, ForceMode mode);

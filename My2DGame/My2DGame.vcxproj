@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="DynamicBodyManager.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -147,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="ColliderManager.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="DynamicBodyManager.h" />
     <ClInclude Include="GameApp.h" />

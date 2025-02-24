@@ -5,26 +5,31 @@
 #include <memory>
 #include <unordered_map>
 #include <iostream>
+#include "Component.h"
 
 class GameObject; //ëOï˚êÈåæ
 using CollisionCallback = std::function<void(GameObject*, GameObject*)>;
 
-class BoxCollider : public std::enable_shared_from_this<BoxCollider>
+class BoxCollider : public std::enable_shared_from_this<BoxCollider>, public Component
 {
 private:
 	GameObject* _owner;
 	sf::Vector2f _pos, _size;
 	int _nextHandlerID;
+	int _SetPositionCallbackID;
 	std::unordered_map <int, CollisionCallback> _collisionHandlers;
 
 public:
 
 	BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner);
 	~BoxCollider();
-	void Initialize();
-	void DebugDraw();
+
+	void Initialize()override;
+	void DebugDraw() override;
+	void Update() override;
+	void Release() override;
+
 	void SetPosition(sf::Vector2f pos);
-	void Release();
 	void OnCollision(GameObject* other);
 	int AddCollisionHandler(CollisionCallback callback);
 	void RemoveCollisionHandler(int id);

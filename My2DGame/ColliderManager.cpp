@@ -1,6 +1,7 @@
 #include "ColliderManager.h"
 #include "GameObject.h"
 #include "BoxCollider.h"
+#include "DynamicBody.h"
 
 ColliderManager::ColliderManager()
 {
@@ -53,8 +54,18 @@ void ColliderManager::HandleCollision(std::shared_ptr<BoxCollider> colliderA, st
 	sf::Vector2f pushOut = colliderA->CalculatePushOut(*colliderB);
 
 	//どのオブジェクトが動かせるか
-	bool isMoveA = objA->IsMoveAble();
-	bool isMoveB = objB->IsMoveAble();
+	bool isMoveA = false;
+	bool isMoveB = false;
+	std::shared_ptr<DynamicBody> dynamicBody;
+	if (objA->TryGetComponent<DynamicBody>(dynamicBody))
+	{
+		isMoveA = !dynamicBody->GetIsStatic();
+	}
+
+	if (objB->TryGetComponent<DynamicBody>(dynamicBody))
+	{
+		isMoveB = !dynamicBody->GetIsStatic();
+	}
 
 	if (isMoveA && isMoveB)
 	{

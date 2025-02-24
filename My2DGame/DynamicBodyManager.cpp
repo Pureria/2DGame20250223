@@ -23,7 +23,7 @@ void DynamicBodyManager::Update()
 {
 	for (auto& dynamicBody : _dynamicBodies)
 	{
-		dynamicBody->Update();
+		dynamicBody->SystemUpdate();
 	}
 }
 

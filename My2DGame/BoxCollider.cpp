@@ -9,6 +9,7 @@ BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner)
 	_size = size;
 	_owner = owner;
 	_nextHandlerID = 0;
+	_SetPositionCallbackID = 0;
 }
 
 BoxCollider::~BoxCollider()
@@ -19,9 +20,16 @@ void BoxCollider::Initialize()
 {
 	//コライダーマネージャーに自分を追加
 	ColliderManager::Instance().AddCollider(shared_from_this());
+	
+	//オーナーのSetPosition関数にSetPositionを登録
+	_SetPositionCallbackID = _owner->AddSetPositionCallback([this](sf::Vector2f pos) {this->SetPosition(pos); });
 }
 
 void BoxCollider::DebugDraw()
+{
+}
+
+void BoxCollider::Update()
 {
 }
 
@@ -129,4 +137,7 @@ void BoxCollider::Release()
 {
 	//コライダーマネージャーから自分を削除
 	ColliderManager::Instance().RemoveCollider(shared_from_this());
+
+	//オーナーのSetPosition関数に登録したコールバックを削除
+	_owner->RemoveSetPositionCallback(_SetPositionCallbackID);
 }
