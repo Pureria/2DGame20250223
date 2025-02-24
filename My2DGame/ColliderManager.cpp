@@ -35,6 +35,11 @@ void ColliderManager::Update()
 	}
 }
 
+bool ColliderManager::Release()
+{
+	return true;
+}
+
 void ColliderManager::HandleCollision(std::shared_ptr<BoxCollider> colliderA, std::shared_ptr<BoxCollider> colliderB)
 {
 	// ‚±‚±‚ÉÕ“Ëˆ—‚ğ‘‚­

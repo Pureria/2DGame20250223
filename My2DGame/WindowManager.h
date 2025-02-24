@@ -10,8 +10,9 @@ public:
 	bool Initialize(sf::VideoMode, const sf::String);
 	bool CheckWindowEvent();
 	bool WindowUpdate();
-	bool Release();
 	bool IsOpen() const;
+
+	bool Release() override;
 
 	sf::RenderWindow& GetWindow() const;
 };

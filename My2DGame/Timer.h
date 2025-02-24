@@ -16,6 +16,8 @@ public:
 	double DeltaTime() const; // 前回のUpdateからの経過時間を取得
 	double GetFPS() const; // FPSを取得
 	void Update(); // 時間の更新
+
+	bool Release() override;
 };
 
 inline double Timer::DeltaTime() const

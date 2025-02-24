@@ -11,8 +11,8 @@ private:
 	Rectangle* rec1 = nullptr;
 	Rectangle* rec2 = nullptr;
 
-	std::shared_ptr<GameObject> obj1 = nullptr;
-	std::shared_ptr<GameObject> obj2 = nullptr;
+	GameObject* obj1 = nullptr;
+	GameObject* obj2 = nullptr;
 
 	bool _isDebugRender = false;
 

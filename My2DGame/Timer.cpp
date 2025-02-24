@@ -25,3 +25,8 @@ void Timer::Update()
 	_deltaTime = duration.count();
 	_lastFrameTime = now;
 }
+
+bool Timer::Release()
+{
+	return true;
+}

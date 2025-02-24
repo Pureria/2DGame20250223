@@ -16,5 +16,7 @@ public:
 	void AddCollider(std::shared_ptr<BoxCollider> collider);
 	void RemoveCollider(std::shared_ptr<BoxCollider> collider);
 	void Update();
+
+	bool Release() override;
 };
 

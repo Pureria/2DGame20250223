@@ -49,6 +49,8 @@ int main() {
 	//ƒƒ‚ƒŠ‚Ì‰ð•ú
 	gameApp->Release();
 	WindowManager::Instance().Release();
+	ColliderManager::Instance().Release();
+	Timer::Instance().Release();
 	if (gameApp != nullptr)
 	{
 		delete gameApp;

@@ -19,14 +19,14 @@ bool GameApp::Awake()
 bool GameApp::Start()
 {
 	//éläpå`ÇçÏê¨
-	//obj1 = new GameObject(sf::Vector2f(100, 100), sf::Vector2f(100, 100), true);
-	obj1 = std::make_shared<GameObject>(sf::Vector2f(100, 100), sf::Vector2f(100, 100), true);
+	obj1 = new GameObject(sf::Vector2f(100, 100), sf::Vector2f(100, 100), true);
+	//obj1 = std::make_shared<GameObject>(sf::Vector2f(100, 100), sf::Vector2f(100, 100), true);
 	rec1 = new Rectangle(obj1->GetCollider()->GetSize());
 	rec1->SetPosition(obj1->GetPosition());
 	rec1->SetFillColor(sf::Color::Red);
 
-	//obj2 = new GameObject(sf::Vector2f(500, 100), sf::Vector2f(100, 100), true);
-	obj2 = std::make_shared<GameObject>(sf::Vector2f(500, 100), sf::Vector2f(100, 100), true);
+	obj2 = new GameObject(sf::Vector2f(500, 100), sf::Vector2f(100, 100), true);
+	//obj2 = std::make_shared<GameObject>(sf::Vector2f(500, 100), sf::Vector2f(100, 100), true);
 	rec2 = new Rectangle(obj2->GetCollider()->GetSize());
 	rec2->SetPosition(obj2->GetPosition());
 	rec2->SetFillColor(sf::Color::Green);
@@ -93,8 +93,10 @@ bool GameApp::Release()
 	obj1->Release();
 	obj2->Release();
 
-	obj1.reset();
-	obj2.reset();
+	//obj1.reset();
+	//obj2.reset();
+	delete obj1;
+	delete obj2;
 
 	return true;
 }
