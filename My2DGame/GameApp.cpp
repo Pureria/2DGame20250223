@@ -64,10 +64,12 @@ bool GameApp::Update()
 	floorRec->SetPosition(floorObj->GetPosition());
 
 	//obj1‚Æobj2‚ª‰æ–Ê’[‚Ü‚Ås‚Á‚½‚ç”½‘Î‘¤‚ÖSetPosition‚ÅˆÚ“®‚·‚é‚æ‚¤‚É
+	sf::Vector2u windowSize = WindowManager::Instance().GetWindowSize();
+
 	bool outObj = false;
-	if (obj1->GetPosition().x > 800) outObj = true;
+	if (obj1->GetPosition().x > windowSize.x) outObj = true;
 	if (obj1->GetPosition().x + obj1->GetCollider()->GetSize().x < 0) outObj = true;
-	if (obj1->GetPosition().y > 500) outObj = true;
+	if (obj1->GetPosition().y > windowSize.y - obj1->GetCollider()->GetSize().y) outObj = true;
 
 	if (outObj)
 	{
@@ -76,9 +78,9 @@ bool GameApp::Update()
 	}
 
 	outObj = false;
-	if (obj2->GetPosition().x > 800) outObj = true;
+	if (obj2->GetPosition().x > windowSize.x) outObj = true;
 	if (obj2->GetPosition().x + obj2->GetCollider()->GetSize().x < 0) outObj = true;
-	if (obj2->GetPosition().y > 500) outObj = true;
+	if (obj2->GetPosition().y > windowSize.y - obj2->GetCollider()->GetSize().y) outObj = true;
 
 	if (outObj)
 	{
