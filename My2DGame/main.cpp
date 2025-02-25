@@ -1,13 +1,12 @@
 #pragma once
-#include <iostream>
 #include "GameApp.h"
 #include "WindowManager.h"
 #include "Timer.h"
 #include "ColliderManager.h"
 #include "DynamicBodyManager.h"
+#include "DebugManager.h"
 
 #define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
 #include <crtdbg.h>
 
 int main() {
@@ -64,7 +63,8 @@ int main() {
 	}
 
 	//終わったらコンソールにメッセージを表示
-	std::cout << "Game Finish!!" << std::endl;
+	//std::cout << "Game Finish!!" << std::endl;
+	DebugManager::LogInfo("Game Finish!!");
 
 	return 0;
 }

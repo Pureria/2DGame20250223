@@ -129,7 +129,7 @@ void BoxCollider::RemoveCollisionHandler(int id)
 	}
 	else {
 		// IDが見つからなかった場合のログ出力（デバッグ用）
-		std::cerr << "Warning: Attempted to remove non-existent collision handler with ID " << id << std::endl;
+		DebugManager::LogWarning("Attempted to remove non-existent collision handler with ID " + std::to_string(id));
 	}
 }
 

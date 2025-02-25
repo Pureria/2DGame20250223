@@ -1,4 +1,5 @@
 #pragma once
+#include "DebugManager.h"
 
 //コンポーネントの基底クラス
 class Component

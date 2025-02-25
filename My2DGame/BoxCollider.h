@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <memory>
 #include <unordered_map>
-#include <iostream>
 #include "Component.h"
 
 class GameObject; //‘O•ûéŒ¾
