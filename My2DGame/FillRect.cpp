@@ -1,11 +1,11 @@
-#include "Rectangle.h"
+#include "FillRect.h"
 
-Rectangle::Rectangle(const sf::Vector2f& size)
+FillRect::FillRect(const sf::Vector2f& size)
 {
 	_rectangle = new sf::RectangleShape(size);
 }
 
-Rectangle::~Rectangle()
+FillRect::~FillRect()
 {
 	if (_rectangle != nullptr)
 	{
@@ -14,14 +14,14 @@ Rectangle::~Rectangle()
 	}
 }
 
-bool Rectangle::Render()
+bool FillRect::Render()
 {
 	WindowManager::Instance().GetWindow().draw(*_rectangle);
 
 	return true;
 }
 
-bool Rectangle::Release()
+bool FillRect::Release()
 {
 	if (_rectangle != nullptr)
 	{
@@ -32,19 +32,19 @@ bool Rectangle::Release()
 	return true;
 }
 
-bool Rectangle::SetPosition(const sf::Vector2f& pos)
+bool FillRect::SetPosition(const sf::Vector2f& pos)
 {
 	_rectangle->setPosition(pos);
 	return true;
 }
 
-bool Rectangle::SetSize(const sf::Vector2f& size)
+bool FillRect::SetSize(const sf::Vector2f& size)
 {
 	_rectangle->setSize(size);
 	return true;
 }
 
-bool Rectangle::SetFillColor(const sf::Color& color)
+bool FillRect::SetFillColor(const sf::Color& color)
 {
 	_rectangle->setFillColor(color);
 	return true;

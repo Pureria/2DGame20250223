@@ -1,16 +1,16 @@
 #pragma once
 //#include "SFML/Graphics.hpp"
 #include "WindowManager.h"
-#include "Rectangle.h"
+#include "FillRect.h"
 #include "GameObject.h"
 #include <memory>
 
 class GameApp
 {
 private:
-	Rectangle* rec1 = nullptr;
-	Rectangle* rec2 = nullptr;
-	Rectangle* floorRec = nullptr;
+	FillRect* rec1 = nullptr;
+	FillRect* rec2 = nullptr;
+	FillRect* floorRec = nullptr;
 
 	GameObject* obj1 = nullptr;
 	GameObject* obj2 = nullptr;
