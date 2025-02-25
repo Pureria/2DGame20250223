@@ -2,15 +2,16 @@
 //#include "SFML/Graphics.hpp"
 #include "WindowManager.h"
 #include "FillRect.h"
+#include "Rect.h"
 #include "GameObject.h"
 #include <memory>
 
 class GameApp
 {
 private:
-	FillRect* rec1 = nullptr;
-	FillRect* rec2 = nullptr;
-	FillRect* floorRec = nullptr;
+	Rect* rec1 = nullptr;
+	Rect* rec2 = nullptr;
+	Rect* floorRec = nullptr;
 
 	GameObject* obj1 = nullptr;
 	GameObject* obj2 = nullptr;

@@ -25,9 +25,9 @@ bool GameApp::Start()
 	obj1->AddComponent<DynamicBody>(0.05f, obj1, false);
 	if (obj1->TryGetComponent<BoxCollider>(boxCollider))
 	{
-		rec1 = new FillRect(boxCollider->GetSize());
+		rec1 = new Rect(boxCollider->GetSize());
 		rec1->SetPosition(obj1->GetPosition());
-		rec1->SetFillColor(sf::Color::Red);
+		rec1->SetColor(sf::Color::Red);
 	}
 
 	obj2 = new GameObject(sf::Vector2f(500, 100), sf::Vector2f(100, 100));
@@ -35,9 +35,9 @@ bool GameApp::Start()
 	obj2->AddComponent<DynamicBody>(0.05f, obj2, false);
 	if (obj2->TryGetComponent<BoxCollider>(boxCollider))
 	{
-		rec2 = new FillRect(boxCollider->GetSize());
+		rec2 = new Rect(boxCollider->GetSize());
 		rec2->SetPosition(obj2->GetPosition());
-		rec2->SetFillColor(sf::Color::Green);
+		rec2->SetColor(sf::Color::Green);
 	}
 
 	floorObj = new GameObject(sf::Vector2f(0, 500), sf::Vector2f(800, 100));
@@ -45,14 +45,18 @@ bool GameApp::Start()
 	floorObj->AddComponent<DynamicBody>(0.05f, floorObj, true);
 	if (floorObj->TryGetComponent<BoxCollider>(boxCollider))
 	{
-		floorRec = new FillRect(boxCollider->GetSize());
+		floorRec = new Rect(boxCollider->GetSize());
 		floorRec->SetPosition(floorObj->GetPosition());
-		floorRec->SetFillColor(sf::Color::White);
+		floorRec->SetColor(sf::Color::White);
 	}
 
 	obj1->Initialize();
 	obj2->Initialize();
 	floorObj->Initialize();
+
+	rec1->SetLineSize(10);
+	rec2->SetLineSize(10);
+	floorRec->SetLineSize(10);
 	return true;
 }
 

@@ -143,6 +143,7 @@
     <ClCompile Include="IColliderManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="FillRect.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="FillRect.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="WindowManager.h" />
