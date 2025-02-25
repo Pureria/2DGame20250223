@@ -29,6 +29,9 @@ public:
 	template<typename T, typename... Args>
 	std::shared_ptr<T> AddComponent(Args&&... args)
 	{
+		//TがComponentを継承しているかチェック
+		static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+
 		auto component = std::make_shared<T>(std::forward<Args>(args)...);
 		_Components[typeid(T)] = component;
 		component->Initialize();
@@ -45,6 +48,9 @@ public:
 	template<typename T>
 	std::shared_ptr<T> GetComponent()
 	{
+		//TがComponentを継承しているかチェック
+		static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+
 		auto it = _Components.find(typeid(T));
 		if (it != _Components.end())
 		{
