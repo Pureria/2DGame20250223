@@ -19,6 +19,7 @@ private:
 public:
 	GameObject(sf::Vector2f pos, sf::Vector2f size);
 	~GameObject();
+	void Initialize();
 	void Update();
 	void Render();
 	void RenderDebug();

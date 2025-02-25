@@ -18,13 +18,11 @@ bool GameApp::Awake()
 
 bool GameApp::Start()
 {
+	std::shared_ptr<BoxCollider> boxCollider;
 	//ŽlŠpŒ`‚ðì¬
 	obj1 = new GameObject(sf::Vector2f(100, 100), sf::Vector2f(100, 100));
 	obj1->AddComponent<BoxCollider>(sf::Vector2f(100, 100), sf::Vector2f(100, 100), obj1);
 	obj1->AddComponent<DynamicBody>(0.05f, obj1, false);
-
-	//TrygetComponent‚ðŽg‚Á‚Ä‚Ý‚é
-	std::shared_ptr<BoxCollider> boxCollider;
 	if (obj1->TryGetComponent<BoxCollider>(boxCollider))
 	{
 		rec1 = new Rectangle(boxCollider->GetSize());
@@ -52,11 +50,18 @@ bool GameApp::Start()
 		floorRec->SetFillColor(sf::Color::White);
 	}
 
+	obj1->Initialize();
+	obj2->Initialize();
+	floorObj->Initialize();
 	return true;
 }
 
 bool GameApp::Update()
 {
+	obj1->Update();
+	obj2->Update();
+	floorObj->Update();
+
 	bool outObj = false;
 	sf::Vector2u windowSize = WindowManager::Instance().GetWindowSize();
 	std::shared_ptr<DynamicBody> dynamicBody;

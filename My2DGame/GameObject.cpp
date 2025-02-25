@@ -10,6 +10,11 @@ GameObject::~GameObject()
 {
 }
 
+void GameObject::Initialize()
+{
+	//コンポーネントのInitializeは追加時に呼び出されるため、ここでは何もしない
+}
+
 void GameObject::Update()
 {
 	for (auto& component : _Components)
