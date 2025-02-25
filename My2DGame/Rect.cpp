@@ -14,6 +14,8 @@ Rect::Rect(const sf::Vector2f& size)
 	_linePos[2] = sf::Vector2f(size.x, 0);
 	//ç∂â∫
 	_linePos[3] = sf::Vector2f(size.x, size.y);
+
+	UpdateRect();
 }
 
 Rect::Rect(const sf::Vector2f& size, const float& lineSize)
@@ -30,6 +32,8 @@ Rect::Rect(const sf::Vector2f& size, const float& lineSize)
 	_linePos[2] = sf::Vector2f(size.x, 0);
 	//ç∂â∫
 	_linePos[3] = sf::Vector2f(size.x, size.y);
+
+	UpdateRect();
 }
 
 Rect::~Rect()
@@ -59,21 +63,12 @@ void Rect::UpdateRect()
 	//ç∂â∫
 	_linePos[3] = sf::Vector2f(_position.x + _size.x, _position.y + _size.y);
 
-	/*
-	AddThickLine(_thickLines, _linePos[0], _linePos[1], _lineSize, _color);
-	AddThickLine(_thickLines, _linePos[0], _linePos[2], _lineSize, _color);
-	AddThickLine(_thickLines, _linePos[1], _linePos[3], _lineSize, _color);
-	AddThickLine(_thickLines, _linePos[2], _linePos[3], _lineSize, _color);
-	*/
-
 	//âEÇÃê¸
-
 	sf::Vector2f p1_tl = _linePos[0];
 	sf::Vector2f p1_bl = _linePos[1];
 	sf::Vector2f p2_tl = sf::Vector2f(_linePos[0].x + _lineSize, _linePos[0].y);
 	sf::Vector2f p2_bl = sf::Vector2f(_linePos[1].x + _lineSize, _linePos[1].y);
 
-	//2Ç¬ÇÃéOäpå`ÇçÏê¨
 	_thickLines.append(sf::Vertex(p1_tl, _color));
 	_thickLines.append(sf::Vertex(p2_tl, _color));
 	_thickLines.append(sf::Vertex(p2_bl, _color));
@@ -124,33 +119,6 @@ void Rect::UpdateRect()
 	_thickLines.append(sf::Vertex(p2_bl, _color));
 	_thickLines.append(sf::Vertex(p1_bl, _color));
 }
-
-/*
-void Rect::AddThickLine()
-{
-	sf::Vector2f dir = p2 - p1;
-	sf::Vector2f normal(-dir.y, dir.x);
-
-	//ê≥ãKâª
-	float length = std::sqrt(normal.x * normal.x + normal.y * normal.y);
-	normal /= length;
-
-	sf::Vector2f offset = normal * (thickness * 2.0f);
-	sf::Vector2f p1_tl = p1 - offset;
-	sf::Vector2f p1_bl = p1 + offset;
-	sf::Vector2f p2_tl = p2 - offset;
-	sf::Vector2f p2_bl = p2 + offset;
-
-	//2Ç¬ÇÃéOäpå`ÇçÏê¨
-	array.append(sf::Vertex(p1_tl, color));
-	array.append(sf::Vertex(p2_tl, color));
-	array.append(sf::Vertex(p2_bl, color));
-
-	array.append(sf::Vertex(p1_tl, color));
-	array.append(sf::Vertex(p2_bl, color));
-	array.append(sf::Vertex(p1_bl, color));
-}
-*/
 
 bool Rect::SetPosition(const sf::Vector2f& pos)
 {
