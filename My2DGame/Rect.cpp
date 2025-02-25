@@ -2,131 +2,180 @@
 
 Rect::Rect(const sf::Vector2f& size)
 {
+	_thickLines = sf::VertexArray(sf::Triangles);
 	_size = size;
 	_lineSize = 1.0f;
-	//上
-	sf::Vector2f s = sf::Vector2f(size.x, _lineSize);
-	_rectangle[0] = new sf::RectangleShape(s);
 
-	//下
-	s = sf::Vector2f(size.x, _lineSize);
-	_rectangle[1] = new sf::RectangleShape(s);
-
-	//左
-	s = sf::Vector2f(_lineSize, size.y);
-	_rectangle[2] = new sf::RectangleShape(s);
-
-	//右
-	s = sf::Vector2f(_lineSize, size.y);
-	_rectangle[3] = new sf::RectangleShape(s);
+	//右上
+	_linePos[0] = sf::Vector2f(0, 0);
+	//右下
+	_linePos[1] = sf::Vector2f(0, size.y);
+	//左上
+	_linePos[2] = sf::Vector2f(size.x, 0);
+	//左下
+	_linePos[3] = sf::Vector2f(size.x, size.y);
 }
 
 Rect::Rect(const sf::Vector2f& size, const float& lineSize)
 {
+	_thickLines = sf::VertexArray(sf::Triangles);
 	_size = size;
 	_lineSize = lineSize;
-	//上
-	sf::Vector2f s = sf::Vector2f(size.x, _lineSize);
-	_rectangle[0] = new sf::RectangleShape(s);
-	//下
-	s = sf::Vector2f(size.x, _lineSize);
-	_rectangle[1] = new sf::RectangleShape(s);
-	//左
-	s = sf::Vector2f(_lineSize, size.y);
-	_rectangle[2] = new sf::RectangleShape(s);
-	//右
-	s = sf::Vector2f(_lineSize, size.y);
-	_rectangle[3] = new sf::RectangleShape(s);
+
+	//右上
+	_linePos[0] = sf::Vector2f(0, 0);
+	//右下
+	_linePos[1] = sf::Vector2f(0, size.y);
+	//左上
+	_linePos[2] = sf::Vector2f(size.x, 0);
+	//左下
+	_linePos[3] = sf::Vector2f(size.x, size.y);
 }
 
 Rect::~Rect()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (_rectangle[i] != nullptr)
-		{
-			delete _rectangle[i];
-			_rectangle[i] = nullptr;
-		}
-	}
 }
 
 bool Rect::Render()
 {
-	/*
-	for (int i = 0; i < 4; i++)
-	{
-		WindowManager::Instance().GetWindow().draw(*_rectangle[i]);
-	}
-	*/
-
-	WindowManager::Instance().GetWindow().draw(*_rectangle[0]);
-	WindowManager::Instance().GetWindow().draw(*_rectangle[1]);
-	WindowManager::Instance().GetWindow().draw(*_rectangle[2]);
-	WindowManager::Instance().GetWindow().draw(*_rectangle[3]);
+	WindowManager::Instance().GetWindow().draw(_thickLines);
 	return true;
 }
 
 bool Rect::Release()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (_rectangle[i] != nullptr)
-		{
-			delete _rectangle[i]; //動的に割り当てられたメモリを解放
-			_rectangle[i] = nullptr; //ポインタをnullptrに
-		}
-	}
 	return true;
 }
 
+void Rect::UpdateRect()
+{
+	_thickLines.clear();
+	//右上
+	_linePos[0] = sf::Vector2f(_position.x, _position.y);
+	//右下
+	_linePos[1] = sf::Vector2f(_position.x, _position.y + _size.y);
+	//左上
+	_linePos[2] = sf::Vector2f(_position.x + _size.x, _position.y);
+	//左下
+	_linePos[3] = sf::Vector2f(_position.x + _size.x, _position.y + _size.y);
+
+	/*
+	AddThickLine(_thickLines, _linePos[0], _linePos[1], _lineSize, _color);
+	AddThickLine(_thickLines, _linePos[0], _linePos[2], _lineSize, _color);
+	AddThickLine(_thickLines, _linePos[1], _linePos[3], _lineSize, _color);
+	AddThickLine(_thickLines, _linePos[2], _linePos[3], _lineSize, _color);
+	*/
+
+	//右の線
+
+	sf::Vector2f p1_tl = _linePos[0];
+	sf::Vector2f p1_bl = _linePos[1];
+	sf::Vector2f p2_tl = sf::Vector2f(_linePos[0].x + _lineSize, _linePos[0].y);
+	sf::Vector2f p2_bl = sf::Vector2f(_linePos[1].x + _lineSize, _linePos[1].y);
+
+	//2つの三角形を作成
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+	_thickLines.append(sf::Vertex(p1_bl, _color));
+
+	//左の線
+	p1_tl = sf::Vector2f(_linePos[2].x - _lineSize, _linePos[2].y);
+	p1_bl = sf::Vector2f(_linePos[3].x - _lineSize, _linePos[3].y);
+	p2_tl = _linePos[2];
+	p2_bl = _linePos[3];
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+	_thickLines.append(sf::Vertex(p1_bl, _color));
+
+	//上の線
+	p1_tl = _linePos[2];
+	p1_bl = sf::Vector2f(_linePos[2].x, _linePos[2].y + _lineSize);
+	p2_tl = _linePos[0];
+	p2_bl = sf::Vector2f(_linePos[0].x, _linePos[0].y + _lineSize);
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+	_thickLines.append(sf::Vertex(p1_bl, _color));
+
+	//下の線
+	p1_tl = sf::Vector2f(_linePos[3].x, _linePos[3].y - _lineSize);
+	p1_bl = _linePos[3];
+	p2_tl = sf::Vector2f(_linePos[1].x, _linePos[1].y - _lineSize);
+	p2_bl = _linePos[1];
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+
+	_thickLines.append(sf::Vertex(p1_tl, _color));
+	_thickLines.append(sf::Vertex(p2_bl, _color));
+	_thickLines.append(sf::Vertex(p1_bl, _color));
+}
+
+/*
+void Rect::AddThickLine()
+{
+	sf::Vector2f dir = p2 - p1;
+	sf::Vector2f normal(-dir.y, dir.x);
+
+	//正規化
+	float length = std::sqrt(normal.x * normal.x + normal.y * normal.y);
+	normal /= length;
+
+	sf::Vector2f offset = normal * (thickness * 2.0f);
+	sf::Vector2f p1_tl = p1 - offset;
+	sf::Vector2f p1_bl = p1 + offset;
+	sf::Vector2f p2_tl = p2 - offset;
+	sf::Vector2f p2_bl = p2 + offset;
+
+	//2つの三角形を作成
+	array.append(sf::Vertex(p1_tl, color));
+	array.append(sf::Vertex(p2_tl, color));
+	array.append(sf::Vertex(p2_bl, color));
+
+	array.append(sf::Vertex(p1_tl, color));
+	array.append(sf::Vertex(p2_bl, color));
+	array.append(sf::Vertex(p1_bl, color));
+}
+*/
+
 bool Rect::SetPosition(const sf::Vector2f& pos)
 {
-	sf::Vector2f p = pos;
-	//上
-	_rectangle[0]->setPosition(p);
-	//下
-	p.y = pos.y + _size.y - _lineSize;
-	_rectangle[1]->setPosition(p);
-	//左
-	p = pos;
-	_rectangle[2]->setPosition(p); 
-	//右
-	p.x = pos.x + _size.x - _lineSize;
-	_rectangle[3]->setPosition(p);
-
+	_position = pos;
+	UpdateRect();
 	return true;
 }
 
 bool Rect::SetSize(const sf::Vector2f& size)
 {
-	//上
-	sf::Vector2f s = sf::Vector2f(size.x, _lineSize);
-	_rectangle[0]->setSize(s);
-	//下
-	s = sf::Vector2f(size.x, _lineSize);
-	_rectangle[1]->setSize(s);
-	//左
-	s = sf::Vector2f(_lineSize, size.y);
-	_rectangle[2]->setSize(s);
-	//右
-	s = sf::Vector2f(_lineSize, size.y);
-	_rectangle[3]->setSize(s);
+	_size = size;
+	UpdateRect();
+
 	return true;
 }
 
 bool Rect::SetLineSize(const float& lineSize)
 {
 	_lineSize = lineSize;
-	SetSize(_size);
+	UpdateRect();
 	return true;
 }
 
 bool Rect::SetColor(const sf::Color& color)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		_rectangle[i]->setFillColor(color);
-	}
+	_color = color;
 	return true;
 }

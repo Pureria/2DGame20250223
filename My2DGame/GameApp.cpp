@@ -54,9 +54,9 @@ bool GameApp::Start()
 	obj2->Initialize();
 	floorObj->Initialize();
 
-	rec1->SetLineSize(10);
-	rec2->SetLineSize(10);
-	floorRec->SetLineSize(10);
+	rec1->SetLineSize(5);
+	rec2->SetLineSize(5);
+	floorRec->SetLineSize(5);
 	return true;
 }
 

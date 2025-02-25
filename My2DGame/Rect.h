@@ -8,13 +8,11 @@ private:
 	sf::Vector2f _position;
 	sf::Vector2f _size;
 	float _lineSize;
-	//sf::RectangleShape* _rectangle;
-	//1 è„
-	//2 â∫
-	//3 ç∂
-	//4 âE
-	sf::RectangleShape* _rectangle[4];
+	sf::Vector2f _linePos[4];
+	sf::Color _color;
+	sf::VertexArray _thickLines;
 
+	void UpdateRect();
 public:
 	Rect(const sf::Vector2f& size);
 	Rect(const sf::Vector2f& size, const float& lineSize);
