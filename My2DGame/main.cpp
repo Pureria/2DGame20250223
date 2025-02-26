@@ -2,8 +2,7 @@
 #include "GameApp.h"
 #include "WindowManager.h"
 #include "Timer.h"
-#include "ColliderManager.h"
-#include "DynamicBodyManager.h"
+#include "PhysicsManager.h"
 #include "DebugManager.h"
 
 #define _CRTDBG_MAP_ALLOC
@@ -15,8 +14,7 @@ int main() {
 	//ウィンドウを作成
 	//sf::RenderWindow window(sf::VideoMode(800, 600), "My 2D Game");
 	WindowManager::Instance().Initialize(sf::VideoMode(800, 600), "My 2D Game");
-	ColliderManager::Instance();
-	DynamicBodyManager::Instance();
+	PhysicsManager::Instance();
 	GameApp* gameApp = new GameApp();
 	Timer::Instance();
 
@@ -32,11 +30,8 @@ int main() {
 		//時間の更新
 		Timer::Instance().Update();
 		
-		//ダイナミックボディの更新
-		DynamicBodyManager::Instance().Update();
-
-		//コライダーの更新
-		ColliderManager::Instance().Update();
+		//物理演算の更新
+		PhysicsManager::Instance().Update();
 
 		//ゲームの更新
 		gameApp->Update();
@@ -53,8 +48,7 @@ int main() {
 	//メモリの解放
 	gameApp->Release();
 	WindowManager::Instance().Release();
-	DynamicBodyManager::Instance().Release();
-	ColliderManager::Instance().Release();
+	PhysicsManager::Instance().Release();
 	Timer::Instance().Release();
 	if (gameApp != nullptr)
 	{

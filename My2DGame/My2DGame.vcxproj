@@ -135,30 +135,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoxCollider.cpp" />
-    <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DebugManager.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
-    <ClCompile Include="DynamicBodyManager.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IColliderManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="FillRect.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxCollider.h" />
-    <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugManager.h" />
     <ClInclude Include="DynamicBody.h" />
-    <ClInclude Include="DynamicBodyManager.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="FillRect.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Timer.h" />

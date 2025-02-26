@@ -12,6 +12,7 @@ class GameObject
 {
 private:
 	int _nextSetPosCBID;
+	float _rotation;
 	sf::Vector2f _pos;
 	std::unordered_map<std::type_index, std::shared_ptr<Component>> _Components;
 	std::unordered_map<int, SetPositionCallback> _SetPositionCallbacks;
@@ -25,6 +26,7 @@ public:
 	void RenderDebug();
 	void Release();
 	sf::Vector2f GetPosition() const;
+	float GetRotation() const;
 
 	//コンポーネントを追加
 	template<typename T, typename... Args>
@@ -76,3 +78,11 @@ public:
 };
 
 inline sf::Vector2f GameObject::GetPosition() const { return _pos; }
+inline float GameObject::GetRotation() const
+{
+	//0~360度に正規化
+	float angle = _rotation;
+	while (angle < 0) angle += 360;
+	while (angle >= 360) angle -= 360;
+	return angle;
+}

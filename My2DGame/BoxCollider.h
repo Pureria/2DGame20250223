@@ -1,8 +1,8 @@
 #pragma once
 #include <SFML/System/Vector2.hpp>
 #include <functional>
-#include <algorithm>
 #include <memory>
+#include <array>
 #include <unordered_map>
 #include "Component.h"
 
@@ -36,6 +36,7 @@ public:
 	sf::Vector2f GetSize() const;
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f CalculatePushOut(const BoxCollider& other);
+	std::array<sf::Vector2f, 4> GetRotatedVertices() const;
 	GameObject* GetOwner();
 };
 

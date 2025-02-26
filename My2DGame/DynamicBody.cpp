@@ -1,6 +1,6 @@
 #pragma once
 #include "DynamicBody.h"
-#include "DynamicBodyManager.h"
+#include "PhysicsManager.h"
 #include "GameObject.h"
 #include "Timer.h"
 
@@ -29,7 +29,7 @@ DynamicBody::~DynamicBody()
 void DynamicBody::Initialize()
 {
 	//ダイナミックボディマネージャーに自分を追加
-	DynamicBodyManager::Instance().AddDynamicBody(shared_from_this());
+	PhysicsManager::Instance().AddDynamicBody(shared_from_this());
 }
 
 void DynamicBody::DebugDraw()
@@ -65,7 +65,7 @@ void DynamicBody::DragUpdate(float deltaTime)
 void DynamicBody::Release()
 {
 	//ダイナミックボディマネージャーから自分を削除
-	DynamicBodyManager::Instance().RemoveDynamicBody(shared_from_this());
+	PhysicsManager::Instance().RemoveDynamicBody(shared_from_this());
 }
 
 void DynamicBody::SetGravityScale(float gravityScale)
