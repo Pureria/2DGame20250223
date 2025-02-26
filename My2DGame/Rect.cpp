@@ -54,16 +54,17 @@ bool Rect::Release()
 void Rect::UpdateRect()
 {
 	_thickLines.clear();
+	sf::Vector2f offset = _size * 0.5f;
 	float cos = std::cos(_rotation);
 	float sin = std::sin(_rotation);
 	//âEè„
-	_linePos[0] = sf::Vector2f(_position.x, _position.y);
+	_linePos[0] = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y - offset.y);
 	//âEâ∫
-	_linePos[1] = sf::Vector2f(_position.x, _position.y + _size.y);
+	_linePos[1] = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y + offset.y);
 	//ç∂è„
-	_linePos[2] = sf::Vector2f(_position.x + _size.x, _position.y);
+	_linePos[2] = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y - offset.y);
 	//ç∂â∫
-	_linePos[3] = sf::Vector2f(_position.x + _size.x, _position.y + _size.y);
+	_linePos[3] = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y + offset.y);
 
 	//âEÇÃê¸
 	sf::Vector2f p1_tl = _linePos[0];
@@ -143,9 +144,9 @@ void Rect::UpdateRect()
 	_thickLines.append(sf::Vertex(p1_bl, _color));
 }
 
-bool Rect::SetPosition(const sf::Vector2f& pos)
+bool Rect::SetCenterPosition(const sf::Vector2f& pos)
 {
-	_position = pos;
+	_CenterPosition = pos;
 	UpdateRect();
 	return true;
 }
@@ -183,7 +184,7 @@ sf::Vector2f Rect::GetRotationPos(const sf::Vector2f& pos, const float& angle) c
 	float cos = std::cos(angle);
 	float sin = std::sin(angle);
 	return sf::Vector2f(
-		(pos.x - _position.x) * cos - (pos.y - _position.y) * sin + _position.x,
-		(pos.x - _position.x) * sin + (pos.y - _position.y) * cos + _position.y
+		(pos.x - _CenterPosition.x) * cos - (pos.y - _CenterPosition.y) * sin + _CenterPosition.x,
+		(pos.x - _CenterPosition.x) * sin + (pos.y - _CenterPosition.y) * cos + _CenterPosition.y
 	);
 }

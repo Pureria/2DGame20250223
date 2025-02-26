@@ -14,12 +14,12 @@ GameApp::~GameApp()
 bool GameApp::Awake()
 {
 	_fillRect = new FillRect(sf::Vector2f(100, 100));
-	_fillRect->SetPosition(sf::Vector2f(100, 100));
+	_fillRect->SetCenterPosition(sf::Vector2f(100, 100));
 	_fillRect->SetColor(sf::Color::Red);
 	_fillRect->SetRotation(0.0f);
 
 	_rect = new Rect(sf::Vector2f(100, 100));
-	_rect->SetPosition(sf::Vector2f(400, 300));
+	_rect->SetCenterPosition(sf::Vector2f(400, 300));
 	_rect->SetColor(sf::Color::Green);
 	_rect->SetRotation(0.0f);
 	_rect->SetLineSize(5.0f);
@@ -38,6 +38,11 @@ bool GameApp::Update()
 	rotation += 1.0f * Timer::Instance().DeltaTime();
 	if(rotation > 360.0f) rotation = 0.0f;
 	_fillRect->SetRotation(rotation);
+
+	rotation = _rect->GetRotation();
+	rotation -= 1.0f * Timer::Instance().DeltaTime();
+	if (rotation < 0.0f) rotation = 360.0f;
+	_rect->SetRotation(rotation);
 	
 	return true;
 }

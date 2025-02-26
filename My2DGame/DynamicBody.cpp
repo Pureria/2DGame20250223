@@ -54,9 +54,9 @@ void DynamicBody::SystemUpdate()
 	_velocity.y += (GRAVITY * _gravityScale) * deltaTime;
 	
 	//オーナーの位置を更新
-	sf::Vector2f pos = _owner->GetPosition();
+	sf::Vector2f pos = _owner->GetCenterPosition();
 	pos += _velocity;
-	_owner->SetPosition(pos);
+	_owner->SetCenterPosition(pos);
 
 	//回転を適用
 	float rotation = _owner->GetRotation();
@@ -66,6 +66,17 @@ void DynamicBody::SystemUpdate()
 	//ドラッグの適用
 	DragUpdate(deltaTime);
 	AngularDragUpdate(deltaTime);
+}
+
+void DynamicBody::ApplyImpulse(sf::Vector2f impulse, sf::Vector2f contactPoint)
+{
+	_velocity += impulse;
+
+	//角速度の計算
+	sf::Vector2f center = _owner->GetCenterPosition();
+	sf::Vector2f r = contactPoint - center; //回転中心からの距離
+	float torque = r.x * impulse.y - r.y * impulse.x; //トルク = r x F
+	_angularVelocity += torque / _momentOfInertia;
 }
 
 void DynamicBody::DragUpdate(float deltaTime)

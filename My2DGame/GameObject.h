@@ -26,7 +26,7 @@ public:
 	void RenderDebug();
 	void Release();
 	void SetRotation(float angle);
-	sf::Vector2f GetPosition() const;
+	sf::Vector2f GetCenterPosition() const;
 	float GetRotation() const;
 
 	//コンポーネントを追加
@@ -72,14 +72,14 @@ public:
 	}
 
 	void AddPosition(sf::Vector2f delta);
-	void SetPosition(sf::Vector2f pos);
+	void SetCenterPosition(sf::Vector2f pos);
 
 	int AddSetPositionCallback(SetPositionCallback callback);
 	void RemoveSetPositionCallback(int id);
 };
 
 inline void GameObject::SetRotation(float angle) { _rotation = angle; }
-inline sf::Vector2f GameObject::GetPosition() const { return _pos; }
+inline sf::Vector2f GameObject::GetCenterPosition() const { return _pos; }
 inline float GameObject::GetRotation() const
 {
 	//0~360度に正規化

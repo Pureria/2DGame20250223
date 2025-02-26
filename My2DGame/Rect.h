@@ -5,7 +5,7 @@
 class Rect
 {
 private:
-	sf::Vector2f _position;
+	sf::Vector2f _CenterPosition;
 	sf::Vector2f _size;
 	float _rotation;
 	float _lineSize;
@@ -22,19 +22,19 @@ public:
 	bool Render();
 	bool Release();
 	
-	bool SetPosition(const sf::Vector2f& pos);
+	bool SetCenterPosition(const sf::Vector2f& pos);
 	bool SetSize(const sf::Vector2f& size);
 	bool SetLineSize(const float& lineSize);
 	bool SetColor(const sf::Color& color);
 	bool SetRotation(const float& rotation);
 
-	sf::Vector2f GetPosition() const;
+	sf::Vector2f GetCenterPosition() const;
 	sf::Vector2f GetSize() const;
 	float GetLineSize() const;
 	float GetRotation() const;
 };
 
-inline sf::Vector2f Rect::GetPosition() const { return _position; }
+inline sf::Vector2f Rect::GetCenterPosition() const { return _CenterPosition; }
 inline sf::Vector2f Rect::GetSize() const { return _size; }
 inline float Rect::GetLineSize() const { return _lineSize; }
 inline float Rect::GetRotation() const { return _rotation; }

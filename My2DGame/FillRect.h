@@ -5,7 +5,7 @@
 class FillRect
 {
 private:
-	sf::Vector2f _position;
+	sf::Vector2f _CenterPosition;
 	sf::Vector2f _size;
 	float _rotation;
 	sf::Color _color;
@@ -19,16 +19,16 @@ public:
 	bool Render();
 	bool Release();
 	
-	bool SetPosition(const sf::Vector2f& pos);
+	bool SetCenterPosition(const sf::Vector2f& pos);
 	bool SetSize(const sf::Vector2f& size);
 	bool SetRotation(const float& rotation);
 	bool SetColor(const sf::Color& color);
 
-	sf::Vector2f GetPosition() const;
+	sf::Vector2f GetCenterPosition() const;
 	sf::Vector2f GetSize() const;
 	float GetRotation() const;
 };
 
-inline sf::Vector2f FillRect::GetPosition() const { return _position; }
+inline sf::Vector2f FillRect::GetCenterPosition() const { return _CenterPosition; }
 inline sf::Vector2f FillRect::GetSize() const { return _size; }
 inline float FillRect::GetRotation() const { return _rotation; }

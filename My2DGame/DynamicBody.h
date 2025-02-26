@@ -24,6 +24,7 @@ private:
 	float _drag;
 	float _angularDrag; //角速度の減衰率
 	float _angularVelocity; //角速度(度/秒)
+	float _momentOfInertia; //慣性モーメント
 	bool _isStatic;
 	sf::Vector2f _velocity;
 
@@ -41,6 +42,7 @@ public:
 	void Release() override;
 
 	void SystemUpdate();
+	void ApplyImpulse(sf::Vector2f impulse, sf::Vector2f contactPoint);
 
 	void SetGravityScale(float gravityScale);
 	void SetVelocity(sf::Vector2f velocity, ForceMode mode);

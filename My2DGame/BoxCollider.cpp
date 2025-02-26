@@ -5,7 +5,7 @@
 
 BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner)
 {
-	_pos = pos;
+	_centerPos = pos;
 	_size = size;
 	_owner = owner;
 	_nextHandlerID = 0;
@@ -22,7 +22,7 @@ void BoxCollider::Initialize()
 	PhysicsManager::Instance().AddCollider(shared_from_this());
 	
 	//オーナーのSetPosition関数にSetPositionを登録
-	_SetPositionCallbackID = _owner->AddSetPositionCallback([this](sf::Vector2f pos) {this->SetPosition(pos); });
+	_SetPositionCallbackID = _owner->AddSetPositionCallback([this](sf::Vector2f pos) {this->SetCenterPosition(pos); });
 }
 
 void BoxCollider::DebugDraw()
@@ -33,9 +33,9 @@ void BoxCollider::Update()
 {
 }
 
-void BoxCollider::SetPosition(sf::Vector2f pos)
+void BoxCollider::SetCenterPosition(sf::Vector2f pos)
 {
-	_pos = pos;
+	_centerPos = pos;
 }
 
 bool BoxCollider::IsColliding(BoxCollider& other) const
@@ -87,15 +87,15 @@ bool BoxCollider::IsColliding(BoxCollider& other) const
 sf::Vector2f BoxCollider::CalculatePushOut(const BoxCollider& other)
 {
 	//AABBでの衝突判定
-	sf::Vector2f otherPos = other.GetPosition();
+	sf::Vector2f otherPos = other.GetCenterPosition();
 	sf::Vector2f otherSize = other.GetSize();
 	
 	//自分の位置と相手の位置を比較して当たっているか判定
-	float overlapX = std::min(_pos.x + _size.x, otherPos.x + otherSize.x) - 
-						std::max(_pos.x, otherPos.x);
+	float overlapX = std::min(_centerPos.x + _size.x, otherPos.x + otherSize.x) -
+						std::max(_centerPos.x, otherPos.x);
 
-	float overlapY = std::min(_pos.y + _size.y, otherPos.y + otherSize.y) -
-						std::max(_pos.y, otherPos.y);
+	float overlapY = std::min(_centerPos.y + _size.y, otherPos.y + otherSize.y) -
+						std::max(_centerPos.y, otherPos.y);
 
 	if (overlapX == overlapY) {
 		return sf::Vector2f(overlapX, 0);
@@ -106,7 +106,7 @@ sf::Vector2f BoxCollider::CalculatePushOut(const BoxCollider& other)
 	{
 		//X軸の重なり具合がY軸より小さい場合
 		//X軸の重なり具合を元に押し戻す方向を決める
-		if (_pos.x < otherPos.x)
+		if (_centerPos.x < otherPos.x)
 		{
 			//自分が左にある場合
 			return sf::Vector2f(-overlapX, 0);
@@ -121,7 +121,7 @@ sf::Vector2f BoxCollider::CalculatePushOut(const BoxCollider& other)
 	{
 		//Y軸の重なり具合がX軸より小さい場合
 		//Y軸の重なり具合を元に押し戻す方向を決める
-		if (_pos.y < otherPos.y)
+		if (_centerPos.y < otherPos.y)
 		{
 			//自分が上にある場合
 			return sf::Vector2f(0, -overlapY);
@@ -175,11 +175,12 @@ std::array<sf::Vector2f, 4> BoxCollider::GetRotatedVertices() const
 {
 	//OBBの四隅を計算
 	//この時点では回転していない状態
+	sf::Vector2f size = _size * 0.5f;
 	std::array<sf::Vector2f, 4> vertives = {
-		_pos,
-		_pos + sf::Vector2f(_size.x, 0),
-		_pos + _size,
-		_pos + sf::Vector2f(0, _size.y)
+		_centerPos + sf::Vector2f(-size.x, size.y),
+		_centerPos + sf::Vector2f(size.x, size.y),
+		_centerPos + sf::Vector2f(-size.x, -size.y),
+		_centerPos + sf::Vector2f(size.x, -size.y)
 	};
 
 	//OBBを回転させる計算

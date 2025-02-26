@@ -2,7 +2,7 @@
 
 FillRect::FillRect(const sf::Vector2f& size)
 {
-	_position = sf::Vector2f(0, 0);
+	_CenterPosition = sf::Vector2f(0, 0);
 	_size = size;
 	_rotation = 0;
 	_color = sf::Color::White;
@@ -29,13 +29,14 @@ bool FillRect::Release()
 void FillRect::UpdateRect()
 {
 	_thickLines.clear();
+	sf::Vector2f offset = _size * 0.5f;
 	float cos = std::cos(_rotation);
 	float sin = std::sin(_rotation);
 
-	sf::Vector2f p1_tl = _position;
-	sf::Vector2f p1_bl = sf::Vector2f(_position.x, _position.y + _size.y);
-	sf::Vector2f p2_tl = sf::Vector2f(_position.x + _size.x, _position.y);
-	sf::Vector2f p2_bl = sf::Vector2f(_position.x + _size.x, _position.y + _size.y);
+	sf::Vector2f p1_tl = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y - offset.y);
+	sf::Vector2f p1_bl = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y + offset.y);
+	sf::Vector2f p2_tl = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y - offset.y);
+	sf::Vector2f p2_bl = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y + offset.y);
 
 	p1_tl = GetRotationPos(p1_tl, _rotation);
 	p1_bl = GetRotationPos(p1_bl, _rotation);
@@ -52,9 +53,9 @@ void FillRect::UpdateRect()
 }
 
 
-bool FillRect::SetPosition(const sf::Vector2f& pos)
+bool FillRect::SetCenterPosition(const sf::Vector2f& pos)
 {
-	_position = pos;
+	_CenterPosition = pos;
 	UpdateRect();
 	return true;
 }
@@ -85,7 +86,7 @@ sf::Vector2f FillRect::GetRotationPos(const sf::Vector2f& pos, const float& angl
 	float cos = std::cos(angle);
 	float sin = std::sin(angle);
 	return sf::Vector2f(
-		(pos.x - _position.x) * cos - (pos.y - _position.y) * sin + _position.x,
-		(pos.x - _position.x) * sin + (pos.y - _position.y) * cos + _position.y
+		(pos.x - _CenterPosition.x) * cos - (pos.y - _CenterPosition.y) * sin + _CenterPosition.x,
+		(pos.x - _CenterPosition.x) * sin + (pos.y - _CenterPosition.y) * cos + _CenterPosition.y
 	);
 }

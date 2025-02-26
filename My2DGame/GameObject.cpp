@@ -69,7 +69,7 @@ void GameObject::AddPosition(sf::Vector2f delta)
 	}
 }
 
-void GameObject::SetPosition(sf::Vector2f pos)
+void GameObject::SetCenterPosition(sf::Vector2f pos)
 {
 	_pos = pos;
 	for (auto& callback : _SetPositionCallbacks)
