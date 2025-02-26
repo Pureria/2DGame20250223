@@ -64,6 +64,7 @@ int main() {
 
 	//終わったらコンソールにメッセージを表示
 	//std::cout << "Game Finish!!" << std::endl;
+	DebugManager::LogInfo("__cplusplus: " + std::to_string(__cplusplus));
 	DebugManager::LogInfo("Game Finish!!");
 
 	return 0;

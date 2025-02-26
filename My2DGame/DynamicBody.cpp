@@ -44,7 +44,7 @@ void DynamicBody::SystemUpdate()
 {
 	if (_isStatic) return;
 
-	float deltaTime = Timer::Instance().DeltaTime();
+	const float deltaTime = static_cast<float>(Timer::Instance().DeltaTime());
 
 	//d—Í‚ğ“K—p
 	_velocity.y += (GRAVITY * _gravityScale) * deltaTime;
