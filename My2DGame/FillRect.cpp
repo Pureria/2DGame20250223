@@ -44,7 +44,7 @@ bool FillRect::SetSize(const sf::Vector2f& size)
 	return true;
 }
 
-bool FillRect::SetFillColor(const sf::Color& color)
+bool FillRect::SetColor(const sf::Color& color)
 {
 	_rectangle->setFillColor(color);
 	return true;

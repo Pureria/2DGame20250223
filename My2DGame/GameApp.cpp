@@ -25,7 +25,7 @@ bool GameApp::Start()
 	obj1->AddComponent<DynamicBody>(0.05f, obj1, false);
 	if (obj1->TryGetComponent<BoxCollider>(boxCollider))
 	{
-		rec1 = new Rect(boxCollider->GetSize());
+		rec1 = new FillRect(boxCollider->GetSize());
 		rec1->SetPosition(obj1->GetPosition());
 		rec1->SetColor(sf::Color::Red);
 	}
@@ -35,7 +35,7 @@ bool GameApp::Start()
 	obj2->AddComponent<DynamicBody>(0.05f, obj2, false);
 	if (obj2->TryGetComponent<BoxCollider>(boxCollider))
 	{
-		rec2 = new Rect(boxCollider->GetSize());
+		rec2 = new FillRect(boxCollider->GetSize());
 		rec2->SetPosition(obj2->GetPosition());
 		rec2->SetColor(sf::Color::Green);
 	}
@@ -45,7 +45,7 @@ bool GameApp::Start()
 	floorObj->AddComponent<DynamicBody>(0.05f, floorObj, true);
 	if (floorObj->TryGetComponent<BoxCollider>(boxCollider))
 	{
-		floorRec = new Rect(boxCollider->GetSize());
+		floorRec = new FillRect(boxCollider->GetSize());
 		floorRec->SetPosition(floorObj->GetPosition());
 		floorRec->SetColor(sf::Color::White);
 	}
@@ -54,9 +54,9 @@ bool GameApp::Start()
 	obj2->Initialize();
 	floorObj->Initialize();
 
-	rec1->SetLineSize(5);
-	rec2->SetLineSize(5);
-	floorRec->SetLineSize(5);
+	//rec1->SetLineSize(5);
+	//rec2->SetLineSize(5);
+	//floorRec->SetLineSize(5);
 	return true;
 }
 
@@ -77,7 +77,7 @@ bool GameApp::Update()
 	float length = std::sqrt(velo.x * velo.x + velo.y * velo.y);
 	velo.x /= length;
 	velo.y /= length;
-	velo *= 0.1f; //スピードを0.1fにする
+	velo *= 0.12f; //スピードを0.1fにする
 	if (obj1->TryGetComponent<DynamicBody>(dynamicBody))
 	{
 		velo.y = dynamicBody->GetVelocity().y;

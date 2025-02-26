@@ -14,7 +14,7 @@ public:
 	bool Release();
 	bool SetPosition(const sf::Vector2f& pos);
 	bool SetSize(const sf::Vector2f& size);
-	bool SetFillColor(const sf::Color& color);
+	bool SetColor(const sf::Color& color);
 
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetSize() const;

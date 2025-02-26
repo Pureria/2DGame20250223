@@ -9,9 +9,9 @@
 class GameApp
 {
 private:
-	Rect* rec1 = nullptr;
-	Rect* rec2 = nullptr;
-	Rect* floorRec = nullptr;
+	FillRect* rec1 = nullptr;
+	FillRect* rec2 = nullptr;
+	FillRect* floorRec = nullptr;
 
 	GameObject* obj1 = nullptr;
 	GameObject* obj2 = nullptr;
