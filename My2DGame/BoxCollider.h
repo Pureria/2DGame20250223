@@ -20,7 +20,7 @@ private:
 
 public:
 
-	BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner);
+	BoxCollider(sf::Vector2f centerPos, sf::Vector2f size, GameObject* owner);
 	~BoxCollider();
 
 	void Initialize()override;

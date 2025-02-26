@@ -1,8 +1,9 @@
 #include "GameObject.h"
 #include "Component.h"
 
-GameObject::GameObject(sf::Vector2f pos, sf::Vector2f size):
-	_pos(pos),
+GameObject::GameObject(sf::Vector2f centerPos, sf::Vector2f size):
+	_CenterPos(centerPos),
+	_Size(size),
 	_nextSetPosCBID(0)
 { }
 
@@ -62,28 +63,23 @@ void GameObject::RemoveSetPositionCallback(int id)
 
 void GameObject::AddPosition(sf::Vector2f delta)
 {
-	_pos += delta;
+	_CenterPos += delta;
 	for (auto& callback : _SetPositionCallbacks)
 	{
-		callback.second(_pos);
+		callback.second(_CenterPos);
 	}
 }
 
 void GameObject::SetCenterPosition(sf::Vector2f pos)
 {
-	_pos = pos;
+	_CenterPos = pos;
 	for (auto& callback : _SetPositionCallbacks)
 	{
-		callback.second(_pos);
+		callback.second(_CenterPos);
 	}
 }
 
-/*  ‰º‚ÍŒã‚ÅÁ‚·  */
-/*
-
-void GameObject::Move(sf::Vector2f dir, ForceMode mode)
+void GameObject::SetSize(sf::Vector2f size)
 {
-	if (!_isMovable) return;
-	_dynamicBody->SetVelocity(dir, mode);
+	_Size = size;
 }
-*/

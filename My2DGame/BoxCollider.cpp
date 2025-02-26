@@ -3,9 +3,9 @@
 #include "GameObject.h"
 #include "PhysicsManager.h"
 
-BoxCollider::BoxCollider(sf::Vector2f pos, sf::Vector2f size, GameObject* owner)
+BoxCollider::BoxCollider(sf::Vector2f centerPos, sf::Vector2f size, GameObject* owner)
 {
-	_centerPos = pos;
+	_centerPos = centerPos;
 	_size = size;
 	_owner = owner;
 	_nextHandlerID = 0;

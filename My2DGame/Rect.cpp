@@ -5,6 +5,7 @@ Rect::Rect(const sf::Vector2f& size)
 	_thickLines = sf::VertexArray(sf::Triangles);
 	_size = size;
 	_lineSize = 1.0f;
+	_rotation = 0;
 
 	//右上
 	_linePos[0] = sf::Vector2f(0, 0);
@@ -23,6 +24,7 @@ Rect::Rect(const sf::Vector2f& size, const float& lineSize)
 	_thickLines = sf::VertexArray(sf::Triangles);
 	_size = size;
 	_lineSize = lineSize;
+	_rotation = 0;
 
 	//右上
 	_linePos[0] = sf::Vector2f(0, 0);
@@ -58,13 +60,13 @@ void Rect::UpdateRect()
 	float cos = std::cos(_rotation);
 	float sin = std::sin(_rotation);
 	//右上
-	_linePos[0] = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y - offset.y);
+	_linePos[0] = sf::Vector2f(_CenterPosition.x + offset.x - 1.0f, _CenterPosition.y - offset.y + 1.0f);
 	//右下
-	_linePos[1] = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y + offset.y);
+	_linePos[1] = sf::Vector2f(_CenterPosition.x + offset.x - 1.0f, _CenterPosition.y + offset.y - 1.0f);
 	//左上
-	_linePos[2] = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y - offset.y);
+	_linePos[2] = sf::Vector2f(_CenterPosition.x - offset.x + 1.0f, _CenterPosition.y - offset.y + 1.0f);
 	//左下
-	_linePos[3] = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y + offset.y);
+	_linePos[3] = sf::Vector2f(_CenterPosition.x - offset.x + 1.0f, _CenterPosition.y + offset.y - 1.0f);
 
 	//右の線
 	sf::Vector2f p1_tl = _linePos[0];

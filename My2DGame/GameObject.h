@@ -13,7 +13,8 @@ class GameObject
 private:
 	int _nextSetPosCBID;
 	float _rotation;
-	sf::Vector2f _pos;
+	sf::Vector2f _CenterPos;
+	sf::Vector2f _Size;
 	std::unordered_map<std::type_index, std::shared_ptr<Component>> _Components;
 	std::unordered_map<int, SetPositionCallback> _SetPositionCallbacks;
 
@@ -26,7 +27,9 @@ public:
 	void RenderDebug();
 	void Release();
 	void SetRotation(float angle);
+	void SetSize(sf::Vector2f size);
 	sf::Vector2f GetCenterPosition() const;
+	sf::Vector2f GetSize() const;
 	float GetRotation() const;
 
 	//コンポーネントを追加
@@ -79,7 +82,8 @@ public:
 };
 
 inline void GameObject::SetRotation(float angle) { _rotation = angle; }
-inline sf::Vector2f GameObject::GetCenterPosition() const { return _pos; }
+inline sf::Vector2f GameObject::GetCenterPosition() const { return _CenterPos; }
+inline sf::Vector2f GameObject::GetSize() const { return _Size; }
 inline float GameObject::GetRotation() const
 {
 	//0~360度に正規化

@@ -33,10 +33,10 @@ void FillRect::UpdateRect()
 	float cos = std::cos(_rotation);
 	float sin = std::sin(_rotation);
 
-	sf::Vector2f p1_tl = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y - offset.y);
-	sf::Vector2f p1_bl = sf::Vector2f(_CenterPosition.x + offset.x, _CenterPosition.y + offset.y);
-	sf::Vector2f p2_tl = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y - offset.y);
-	sf::Vector2f p2_bl = sf::Vector2f(_CenterPosition.x - offset.x, _CenterPosition.y + offset.y);
+	sf::Vector2f p1_tl = sf::Vector2f(_CenterPosition.x + offset.x - 1.0f, _CenterPosition.y - offset.y + 1.0f);
+	sf::Vector2f p1_bl = sf::Vector2f(_CenterPosition.x + offset.x - 1.0f, _CenterPosition.y + offset.y - 1.0f);
+	sf::Vector2f p2_tl = sf::Vector2f(_CenterPosition.x - offset.x + 1.0f, _CenterPosition.y - offset.y + 1.0f);
+	sf::Vector2f p2_bl = sf::Vector2f(_CenterPosition.x - offset.x + 1.0f, _CenterPosition.y + offset.y - 1.0f);
 
 	p1_tl = GetRotationPos(p1_tl, _rotation);
 	p1_bl = GetRotationPos(p1_bl, _rotation);

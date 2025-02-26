@@ -13,16 +13,24 @@ GameApp::~GameApp()
 
 bool GameApp::Awake()
 {
-	_fillRect = new FillRect(sf::Vector2f(100, 100));
-	_fillRect->SetCenterPosition(sf::Vector2f(100, 100));
-	_fillRect->SetColor(sf::Color::Red);
-	_fillRect->SetRotation(0.0f);
+	//床の作成
+	sf::Vector2u windowSize = WindowManager::Instance().GetWindowSize();
+	floor = new GameObject(sf::Vector2f(windowSize.x * 0.5f, windowSize.y - 50.0f), sf::Vector2f(windowSize.x, 100));
+	floor->AddComponent<BoxCollider>(floor->GetCenterPosition(), floor->GetSize(), floor);
+	floor->AddComponent<DynamicBody>(1.0f, floor, true);
+	floorRect = new Rect(sf::Vector2f(windowSize.x, 100));
+	floorRect->SetColor(sf::Color::White);
+	floorRect->SetCenterPosition(floor->GetCenterPosition());
+	floorRect->SetLineSize(5.0f);
 
-	_rect = new Rect(sf::Vector2f(100, 100));
-	_rect->SetCenterPosition(sf::Vector2f(400, 300));
-	_rect->SetColor(sf::Color::Green);
-	_rect->SetRotation(0.0f);
-	_rect->SetLineSize(5.0f);
+	//オブジェクト1の作成
+	obj1 = new GameObject(sf::Vector2f(windowSize.x * 0.5f, 0), sf::Vector2f(100, 100));
+	obj1->AddComponent<BoxCollider>(obj1->GetCenterPosition(), obj1->GetSize(), obj1);
+	obj1->AddComponent<DynamicBody>(0.05f, obj1);
+	obj1Rect = new Rect(sf::Vector2f(100, 100));
+	obj1Rect->SetColor(sf::Color::Red);
+	obj1Rect->SetCenterPosition(obj1->GetCenterPosition());
+	obj1Rect->SetLineSize(5.0f);
 	
 	return true;
 }
@@ -34,21 +42,16 @@ bool GameApp::Start()
 
 bool GameApp::Update()
 {
-	float rotation = _fillRect->GetRotation();
-	rotation += 1.0f * Timer::Instance().DeltaTime();
-	if(rotation > 360.0f) rotation = 0.0f;
-	_fillRect->SetRotation(rotation);
-
-	rotation = _rect->GetRotation();
-	rotation -= 1.0f * Timer::Instance().DeltaTime();
-	if (rotation < 0.0f) rotation = 360.0f;
-	_rect->SetRotation(rotation);
-	
 	return true;
 }
 
 bool GameApp::LateUpdate()
 {
+	floorRect->SetCenterPosition(floor->GetCenterPosition());
+	floorRect->SetRotation(floor->GetRotation());
+
+	obj1Rect->SetCenterPosition(obj1->GetCenterPosition());
+	obj1Rect->SetRotation(obj1->GetRotation());
 	return true;
 }
 
@@ -56,8 +59,11 @@ bool GameApp::Render()
 {
 	WindowManager::Instance().GetWindow().clear(sf::Color::Blue);
 
-	_fillRect->Render();
-	_rect->Render();
+	obj1->Render();
+	floor->Render();
+	
+	floorRect->Render();
+	obj1Rect->Render();
 	
 	return true;
 }
@@ -69,18 +75,32 @@ bool GameApp::RederDebug()
 
 bool GameApp::Release()
 {
-	if (_fillRect != nullptr)
+	if(floorRect != nullptr)
 	{
-		_fillRect->Release();
-		delete _fillRect;
-		_fillRect = nullptr;
+		floorRect->Release();
+		delete floorRect;
+		floorRect = nullptr;
 	}
 
-	if (_rect != nullptr)
+	if(obj1Rect != nullptr)
 	{
-		_rect->Release();
-		delete _rect;
-		_rect = nullptr;
+		obj1Rect->Release();
+		delete obj1Rect;
+		obj1Rect = nullptr;
+	}
+
+	if(floor != nullptr)
+	{
+		floor->Release();
+		delete floor;
+		floor = nullptr;
+	}
+
+	if(obj1 != nullptr)
+	{
+		obj1->Release();
+		delete obj1;
+		obj1 = nullptr;
 	}
 	
 	return true;
