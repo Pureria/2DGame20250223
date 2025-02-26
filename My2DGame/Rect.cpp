@@ -54,6 +54,8 @@ bool Rect::Release()
 void Rect::UpdateRect()
 {
 	_thickLines.clear();
+	float cos = std::cos(_rotation);
+	float sin = std::sin(_rotation);
 	//âEè„
 	_linePos[0] = sf::Vector2f(_position.x, _position.y);
 	//âEâ∫
@@ -69,6 +71,12 @@ void Rect::UpdateRect()
 	sf::Vector2f p2_tl = sf::Vector2f(_linePos[0].x + _lineSize, _linePos[0].y);
 	sf::Vector2f p2_bl = sf::Vector2f(_linePos[1].x + _lineSize, _linePos[1].y);
 
+	//âÒì]
+	p1_tl = GetRotationPos(p1_tl, _rotation);
+	p1_bl = GetRotationPos(p1_bl, _rotation);
+	p2_tl = GetRotationPos(p2_tl, _rotation);
+	p2_bl = GetRotationPos(p2_bl, _rotation);
+
 	_thickLines.append(sf::Vertex(p1_tl, _color));
 	_thickLines.append(sf::Vertex(p2_tl, _color));
 	_thickLines.append(sf::Vertex(p2_bl, _color));
@@ -82,6 +90,11 @@ void Rect::UpdateRect()
 	p1_bl = sf::Vector2f(_linePos[3].x - _lineSize, _linePos[3].y);
 	p2_tl = _linePos[2];
 	p2_bl = _linePos[3];
+
+	p1_tl = GetRotationPos(p1_tl, _rotation);
+	p1_bl = GetRotationPos(p1_bl, _rotation);
+	p2_tl = GetRotationPos(p2_tl, _rotation);
+	p2_bl = GetRotationPos(p2_bl, _rotation);
 
 	_thickLines.append(sf::Vertex(p1_tl, _color));
 	_thickLines.append(sf::Vertex(p2_tl, _color));
@@ -97,6 +110,11 @@ void Rect::UpdateRect()
 	p2_tl = _linePos[0];
 	p2_bl = sf::Vector2f(_linePos[0].x, _linePos[0].y + _lineSize);
 
+	p1_tl = GetRotationPos(p1_tl, _rotation);
+	p1_bl = GetRotationPos(p1_bl, _rotation);
+	p2_tl = GetRotationPos(p2_tl, _rotation);
+	p2_bl = GetRotationPos(p2_bl, _rotation);
+
 	_thickLines.append(sf::Vertex(p1_tl, _color));
 	_thickLines.append(sf::Vertex(p2_tl, _color));
 	_thickLines.append(sf::Vertex(p2_bl, _color));
@@ -110,6 +128,11 @@ void Rect::UpdateRect()
 	p1_bl = _linePos[3];
 	p2_tl = sf::Vector2f(_linePos[1].x, _linePos[1].y - _lineSize);
 	p2_bl = _linePos[1];
+
+	p1_tl = GetRotationPos(p1_tl, _rotation);
+	p1_bl = GetRotationPos(p1_bl, _rotation);
+	p2_tl = GetRotationPos(p2_tl, _rotation);
+	p2_bl = GetRotationPos(p2_bl, _rotation);
 
 	_thickLines.append(sf::Vertex(p1_tl, _color));
 	_thickLines.append(sf::Vertex(p2_tl, _color));
@@ -146,4 +169,20 @@ bool Rect::SetColor(const sf::Color& color)
 {
 	_color = color;
 	return true;
+}
+
+bool Rect::SetRotation(const float& rotation)
+{
+	_rotation = rotation;
+	return true;
+}
+
+sf::Vector2f Rect::GetRotationPos(const sf::Vector2f& pos, const float& angle) const
+{
+	float cos = std::cos(angle);
+	float sin = std::sin(angle);
+	return sf::Vector2f(
+		(pos.x - _position.x) * cos - (pos.y - _position.y) * sin + _position.x,
+		(pos.x - _position.x) * sin + (pos.y - _position.y) * cos + _position.y
+	);
 }
