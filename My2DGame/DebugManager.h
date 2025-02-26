@@ -3,8 +3,11 @@
 #include <iostream>
 #include <string>
 
-static class DebugManager
+class DebugManager
 {
+private:
+	DebugManager() = default;
+	
 public:
 	static void Log(std::string message)
 	{
@@ -24,6 +27,5 @@ public:
 	{
 		std::cout << "Info: " << message << std::endl;
 	}
-
 };
 
