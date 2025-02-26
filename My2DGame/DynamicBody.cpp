@@ -9,7 +9,9 @@ DynamicBody::DynamicBody(float gravityScale, GameObject* owner) :
 	_gravityScale(gravityScale),
 	_velocity(0, 0),
 	_isStatic(false),
-	_drag(1.0f)
+	_drag(1.0f),
+	_angularDrag(1.0f),
+	_angularVelocity(0)
 {	
 }
 
@@ -18,7 +20,9 @@ DynamicBody::DynamicBody(float gravityScale, GameObject* owner, bool isStatic) :
 	_gravityScale(gravityScale),
 	_velocity(0, 0),
 	_isStatic(isStatic),
-	_drag(1.0f)
+	_drag(1.0f),
+	_angularDrag(1.0f),
+	_angularVelocity(0)
 {
 }
 
@@ -48,18 +52,30 @@ void DynamicBody::SystemUpdate()
 
 	//重力を適用
 	_velocity.y += (GRAVITY * _gravityScale) * deltaTime;
+	
 	//オーナーの位置を更新
 	sf::Vector2f pos = _owner->GetPosition();
 	pos += _velocity;
 	_owner->SetPosition(pos);
 
+	//回転を適用
+	float rotation = _owner->GetRotation();
+	rotation += _angularVelocity * deltaTime;
+	_owner->SetRotation(rotation);
+
+	//ドラッグの適用
 	DragUpdate(deltaTime);
+	AngularDragUpdate(deltaTime);
 }
 
 void DynamicBody::DragUpdate(float deltaTime)
 {
 	_velocity *= std::exp(-_drag * deltaTime);
+}
 
+void DynamicBody::AngularDragUpdate(float deltaTime)
+{
+	_angularVelocity *= std::exp(-_angularDrag * deltaTime);
 }
 
 void DynamicBody::Release()
@@ -93,4 +109,21 @@ void DynamicBody::SetIsGravityEnabled(bool isGravity)
 void DynamicBody::SetDrag(float drag)
 {
 	_drag = drag;
+}
+
+void DynamicBody::SetAngularDrag(float drag)
+{
+	_angularDrag = drag;
+}
+
+void DynamicBody::SetAngularVelocity(float velocity, ForceMode mode)
+{
+	if (mode == ForceMode::ADD)
+	{
+		_angularVelocity += velocity;
+	}
+	else if (mode == ForceMode::SET)
+	{
+		_angularVelocity = velocity;
+	}
 }

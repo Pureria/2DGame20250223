@@ -22,10 +22,13 @@ private:
 	GameObject* _owner;
 	float _gravityScale;
 	float _drag;
+	float _angularDrag; //Šp‘¬“x‚ÌŒ¸Š—¦
+	float _angularVelocity; //Šp‘¬“x(“x/•b)
 	bool _isStatic;
 	sf::Vector2f _velocity;
 
 	void DragUpdate(float deltaTime);
+	void AngularDragUpdate(float deltaTime);
 
 public:
 	DynamicBody(float gravityScale, GameObject* owner);
@@ -41,18 +44,24 @@ public:
 
 	void SetGravityScale(float gravityScale);
 	void SetVelocity(sf::Vector2f velocity, ForceMode mode);
+	void SetAngularVelocity(float velocity, ForceMode mode); //Šp‘¬“x‚Ìİ’è
 	void SetIsGravityEnabled(bool isStatic);
 	void SetDrag(float drag);
+	void SetAngularDrag(float drag); //Šp‘¬“x‚ÌŒ¸Š—¦‚Ìİ’è
 
 	bool GetIsStatic() const;
 	float GetGravityScale() const;
 	float GetDrag() const;
+	float GetAngularVelocity() const; //Šp‘¬“x‚Ìæ“¾
+	float GetAngularDrag() const; //Šp‘¬“x‚ÌŒ¸Š—¦‚Ìæ“¾
 	sf::Vector2f GetVelocity() const;
 	GameObject* GetOwner();
 };
 
 inline float DynamicBody::GetGravityScale() const { return _gravityScale; }
 inline sf::Vector2f DynamicBody::GetVelocity() const { return _velocity; }
+inline float DynamicBody::GetAngularVelocity() const { return _angularVelocity; }
+inline float DynamicBody::GetAngularDrag() const { return _angularDrag; }
 inline GameObject* DynamicBody::GetOwner() { return _owner; }
 inline bool DynamicBody::GetIsStatic() const { return _isStatic; }
 inline float DynamicBody::GetDrag() const { return _drag; }

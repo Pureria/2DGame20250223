@@ -25,6 +25,7 @@ public:
 	void Render();
 	void RenderDebug();
 	void Release();
+	void SetRotation(float angle);
 	sf::Vector2f GetPosition() const;
 	float GetRotation() const;
 
@@ -77,6 +78,7 @@ public:
 	void RemoveSetPositionCallback(int id);
 };
 
+inline void GameObject::SetRotation(float angle) { _rotation = angle; }
 inline sf::Vector2f GameObject::GetPosition() const { return _pos; }
 inline float GameObject::GetRotation() const
 {
