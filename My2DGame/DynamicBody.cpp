@@ -11,7 +11,10 @@ DynamicBody::DynamicBody(float gravityScale, GameObject* owner) :
 	_isStatic(false),
 	_drag(1.0f),
 	_angularDrag(1.0f),
-	_angularVelocity(0)
+	_angularVelocity(0),
+	_mass(1.0f),
+	_elasticity(0.5f),
+	_momentOfInertia(1.0f)
 {	
 }
 
@@ -22,7 +25,10 @@ DynamicBody::DynamicBody(float gravityScale, GameObject* owner, bool isStatic) :
 	_isStatic(isStatic),
 	_drag(1.0f),
 	_angularDrag(1.0f),
-	_angularVelocity(0)
+	_angularVelocity(0),
+	_mass(1.0f),
+	_elasticity(0.5f),
+	_momentOfInertia(1.0f)
 {
 }
 
@@ -137,4 +143,14 @@ void DynamicBody::SetAngularVelocity(float velocity, ForceMode mode)
 	{
 		_angularVelocity = velocity;
 	}
+}
+
+void DynamicBody::SetElasticity(float elasticity)
+{
+	_elasticity = elasticity;
+}
+
+void DynamicBody::SetMass(float mass)
+{
+	_mass = mass;
 }

@@ -60,5 +60,30 @@ bool PhysicsManager::Release()
 
 void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB)
 {
-    //TODO::衝突時の処理
+    auto bodyA = objA->GetComponent<DynamicBody>();
+    auto bodyB = objB->GetComponent<DynamicBody>();
+    if(!bodyA || !bodyB) return;
+
+    sf::Vector2f normal = objB->GetCenterPosition() - objA->GetCenterPosition();
+    normal /= std::sqrt(normal.x * normal.x + normal.y * normal.y); //正規化
+
+    float elasticity = (bodyA->GetElasticity() + bodyB->GetElasticity()) * 0.5f;
+    float massA = bodyA->GetMass(), massB = bodyB->GetMass();
+
+    //相対速度
+    sf::Vector2f relativeVelocity = bodyB->GetVelocity() - bodyA->GetVelocity();
+    float impulseMagunitude = -(1.0f + elasticity) * (relativeVelocity.x * normal.x + relativeVelocity.y * normal.y);
+    impulseMagunitude /= (1.0f / massA + 1.0f / massB);
+
+    sf::Vector2f impulse = impulseMagunitude * normal;
+    sf::Vector2f contactPoint = (objA->GetCenterPosition() + objB->GetCenterPosition()) * 0.5f;
+
+    bodyA->ApplyImpulse(-impulse, contactPoint);
+    bodyB->ApplyImpulse(impulse, contactPoint);
+
+    //衝突時のコールバックを呼び出し
+    auto colliderA = objA->GetComponent<BoxCollider>();
+    auto colliderB = objB->GetComponent<BoxCollider>();
+    colliderA->OnCollision(objB);
+    colliderB->OnCollision(objA);
 }
