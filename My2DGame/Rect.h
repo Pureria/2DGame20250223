@@ -21,6 +21,7 @@ public:
 	~Rect();
 	bool Render();
 	bool Release();
+	
 	bool SetPosition(const sf::Vector2f& pos);
 	bool SetSize(const sf::Vector2f& size);
 	bool SetLineSize(const float& lineSize);

@@ -3,20 +3,15 @@
 #include "WindowManager.h"
 #include "FillRect.h"
 #include "Rect.h"
+#include "Timer.h"
 #include "GameObject.h"
 #include <memory>
 
 class GameApp
 {
 private:
-	FillRect* rec1 = nullptr;
-	FillRect* rec2 = nullptr;
-	FillRect* floorRec = nullptr;
-
-	GameObject* obj1 = nullptr;
-	GameObject* obj2 = nullptr;
-	GameObject* floorObj = nullptr;
-
+	FillRect* _fillRect;
+	Rect* _rect;
 	bool _isDebugRender = false;
 
 public:

@@ -154,7 +154,6 @@ bool Rect::SetSize(const sf::Vector2f& size)
 {
 	_size = size;
 	UpdateRect();
-
 	return true;
 }
 
@@ -168,12 +167,14 @@ bool Rect::SetLineSize(const float& lineSize)
 bool Rect::SetColor(const sf::Color& color)
 {
 	_color = color;
+	UpdateRect();
 	return true;
 }
 
 bool Rect::SetRotation(const float& rotation)
 {
 	_rotation = rotation;
+	UpdateRect();
 	return true;
 }
 
