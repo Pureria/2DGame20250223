@@ -2,6 +2,8 @@
 #include "BoxCollider.h"
 #include "GameObject.h"
 #include "PhysicsManager.h"
+#include "SFML/Graphics.hpp"
+#include "WindowManager.h"
 
 BoxCollider::BoxCollider(sf::Vector2f centerPos, sf::Vector2f size, GameObject* owner)
 {
@@ -27,6 +29,15 @@ void BoxCollider::Initialize()
 
 void BoxCollider::DebugDraw()
 {
+	//当たり判定の描画
+	std::vector<sf::Vector2f> corners = GetTransformedCorners();
+	sf::VertexArray lines(sf::LinesStrip, 5);
+	lines[0].position = corners[0];
+	lines[1].position = corners[1];
+	lines[2].position = corners[2];
+	lines[3].position = corners[3];
+	lines[4].position = corners[0];
+	WindowManager::Instance().GetWindow().draw(lines);
 }
 
 void BoxCollider::Update()
@@ -103,17 +114,39 @@ void BoxCollider::ProjectOntoAxis(const sf::Vector2f& axis, float& min, float& m
 
 float BoxCollider::DotProduct(const sf::Vector2f& a, const sf::Vector2f& b) const { return a.x * b.x + a.y * b.y; }
 
+//回転後の各頂点を取得
 std::vector<sf::Vector2f> BoxCollider::GetTransformedCorners() const
 {
 	std::vector<sf::Vector2f> corners;
 	sf::Vector2f center = _owner->GetCenterPosition();
 	sf::Vector2f halfSize = _size * 0.5f;
 	float rotation = _owner->GetRotation();
+	float cos = std::cos(rotation);
+	float sin = std::sin(rotation);
 
+	/*
 	corners.push_back(RotateVector(sf::Vector2f(-halfSize.x, -halfSize.y), rotation) + center);
 	corners.push_back(RotateVector(sf::Vector2f(halfSize.x, -halfSize.y), rotation) + center);
 	corners.push_back(RotateVector(sf::Vector2f(halfSize.x, halfSize.y), rotation) + center);
 	corners.push_back(RotateVector(sf::Vector2f(-halfSize.x, halfSize.y), rotation) + center);
+	*/
+
+	//左上
+	corners.push_back(sf::Vector2f(center.x - halfSize.x, center.y - halfSize.y));
+	//右上
+	corners.push_back(sf::Vector2f(center.x + halfSize.x, center.y - halfSize.y));
+	//右下
+	corners.push_back(sf::Vector2f(center.x + halfSize.x, center.y + halfSize.y));
+	//左下
+	corners.push_back(sf::Vector2f(center.x - halfSize.x, center.y + halfSize.y));
+
+	for(auto& corner: corners)
+	{
+		corner = sf::Vector2f(
+			(corner.x - center.x) * cos - (corner.y - center.y) * sin + center.x,
+			(corner.x - center.x) * sin + (corner.y - center.y) * cos + center.y
+		);
+	}
 
 	return corners;
 }

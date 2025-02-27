@@ -17,8 +17,8 @@ private:
 	Rect* floorRect;
 
 	//オブジェクト1
-	GameObject* obj1;
-	Rect* obj1Rect;
+	//GameObject* obj1;
+	//Rect* obj1Rect;
 
 	//オブジェクト2
 	GameObject* obj2;
