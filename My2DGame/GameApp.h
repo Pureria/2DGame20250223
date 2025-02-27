@@ -20,6 +20,10 @@ private:
 	GameObject* obj1;
 	Rect* obj1Rect;
 
+	//オブジェクト2
+	GameObject* obj2;
+	Rect* obj2Rect;
+
 public:
 	GameApp();
 	~GameApp();

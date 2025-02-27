@@ -18,6 +18,11 @@ private:
 	int _SetPositionCallbackID;
 	std::unordered_map <int, CollisionCallback> _collisionHandlers;
 
+	std::vector<sf::Vector2f> GetSeparatingAxes(const BoxCollider& other) const;
+	std::vector<sf::Vector2f> GetTransformedCorners() const;
+	sf::Vector2f RotateVector(const sf::Vector2f& vec, float angle) const;
+	float DotProduct(const sf::Vector2f& a, const sf::Vector2f& b) const;
+	void ProjectOntoAxis(const sf::Vector2f& axis, float& min, float& max) const;
 public:
 
 	BoxCollider(sf::Vector2f centerPos, sf::Vector2f size, GameObject* owner);
@@ -33,6 +38,7 @@ public:
 	int AddCollisionHandler(CollisionCallback callback);
 	void RemoveCollisionHandler(int id);
 	bool IsColliding(BoxCollider& other) const;
+	bool CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f& penetration) const;
 	sf::Vector2f GetSize() const;
 	sf::Vector2f GetCenterPosition() const;
 	sf::Vector2f CalculatePushOut(const BoxCollider& other);

@@ -64,6 +64,35 @@ void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB)
     auto bodyB = objB->GetComponent<DynamicBody>();
     if(!bodyA || !bodyB) return;
 
+    auto colliderA = objA->GetComponent<BoxCollider>();
+    auto colliderB = objB->GetComponent<BoxCollider>();
+    if(!colliderA || !colliderB) return;
+
+    sf::Vector2f penetration;
+    if(!colliderA->CalculatePenetrationOBB(*colliderB, penetration)) return;
+
+    //押し出し処理
+    float totalMass = bodyA->GetMass() + bodyB->GetMass();
+    if (totalMass > 0)
+    {
+        // 片方がstaticの場合、もう片方のみ移動
+        if (bodyA->GetIsStatic() && !bodyB->GetIsStatic())
+        {
+            objB->SetCenterPosition(objB->GetCenterPosition() + (penetration * -1.0f));
+        }
+        else if (!bodyA->GetIsStatic() && bodyB->GetIsStatic())
+        {
+            objA->SetCenterPosition(objA->GetCenterPosition() - (penetration * -1.0f));
+        }
+        else if (!bodyA->GetIsStatic() && !bodyB->GetIsStatic())
+        {
+            // 両方がdynamicの場合は、両方を押し出し
+            objA->SetCenterPosition(objA->GetCenterPosition() - penetration * (bodyB->GetMass() / totalMass));
+            objB->SetCenterPosition(objB->GetCenterPosition() + penetration * (bodyA->GetMass() / totalMass));
+        }
+    }
+
+    //衝突時の法線ベクトルを求める
     sf::Vector2f normal = objB->GetCenterPosition() - objA->GetCenterPosition();
     normal /= std::sqrt(normal.x * normal.x + normal.y * normal.y); //正規化
 
@@ -78,12 +107,17 @@ void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB)
     sf::Vector2f impulse = impulseMagunitude * normal;
     sf::Vector2f contactPoint = (objA->GetCenterPosition() + objB->GetCenterPosition()) * 0.5f;
 
-    bodyA->ApplyImpulse(-impulse, contactPoint);
-    bodyB->ApplyImpulse(impulse, contactPoint);
+    // インパルスを適用
+    if (!bodyA->GetIsStatic())
+    {
+        bodyA->ApplyImpulse(-impulse, contactPoint);
+    }
+    if (!bodyB->GetIsStatic())
+    {
+        bodyB->ApplyImpulse(impulse, contactPoint);
+    }
 
     //衝突時のコールバックを呼び出し
-    auto colliderA = objA->GetComponent<BoxCollider>();
-    auto colliderB = objB->GetComponent<BoxCollider>();
     colliderA->OnCollision(objB);
     colliderB->OnCollision(objA);
 }
