@@ -3,6 +3,8 @@
 
 #include "Singleton.h"
 #include <vector>
+#include <SFML/Graphics/BlendMode.hpp>
+#include <SFML/System/Vector2.hpp>
 
 class BoxCollider;
 class DynamicBody;
@@ -25,5 +27,5 @@ public:
     void RemoveCollider(std::shared_ptr<BoxCollider> collider);
 
     bool Release() override;
-    void HandleCollision(GameObject* objA, GameObject* objB);
+    void HandleCollision(GameObject* objA, GameObject* objB, sf::Vector2f penetration);
 };

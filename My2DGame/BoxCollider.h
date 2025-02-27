@@ -37,12 +37,9 @@ public:
 	void OnCollision(GameObject* other);
 	int AddCollisionHandler(CollisionCallback callback);
 	void RemoveCollisionHandler(int id);
-	bool IsColliding(BoxCollider& other) const;
 	bool CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f& penetration) const;
 	sf::Vector2f GetSize() const;
 	sf::Vector2f GetCenterPosition() const;
-	sf::Vector2f CalculatePushOut(const BoxCollider& other);
-	std::array<sf::Vector2f, 4> GetRotatedVertices() const;
 	GameObject* GetOwner();
 };
 
