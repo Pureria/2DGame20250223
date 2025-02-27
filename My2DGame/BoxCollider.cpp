@@ -123,14 +123,6 @@ std::vector<sf::Vector2f> BoxCollider::GetTransformedCorners() const
 	float rotation = _owner->GetRotation();
 	float cos = std::cos(rotation);
 	float sin = std::sin(rotation);
-
-	/*
-	corners.push_back(RotateVector(sf::Vector2f(-halfSize.x, -halfSize.y), rotation) + center);
-	corners.push_back(RotateVector(sf::Vector2f(halfSize.x, -halfSize.y), rotation) + center);
-	corners.push_back(RotateVector(sf::Vector2f(halfSize.x, halfSize.y), rotation) + center);
-	corners.push_back(RotateVector(sf::Vector2f(-halfSize.x, halfSize.y), rotation) + center);
-	*/
-
 	//ç∂è„
 	corners.push_back(sf::Vector2f(center.x - halfSize.x, center.y - halfSize.y));
 	//âEè„
