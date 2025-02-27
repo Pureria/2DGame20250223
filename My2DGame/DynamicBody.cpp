@@ -76,7 +76,7 @@ void DynamicBody::SystemUpdate()
 
 void DynamicBody::ApplyImpulse(sf::Vector2f impulse, sf::Vector2f contactPoint)
 {
-	_velocity += impulse;
+	_velocity += impulse / _mass;
 
 	//Šp‘¬“x‚ÌŒvŽZ
 	sf::Vector2f center = _owner->GetCenterPosition();
@@ -92,7 +92,10 @@ void DynamicBody::DragUpdate(float deltaTime)
 
 void DynamicBody::AngularDragUpdate(float deltaTime)
 {
-	_angularVelocity *= std::exp(-_angularDrag * deltaTime);
+	//_angularVelocity *= std::exp(-_angularDrag * deltaTime);
+	float dragFactor = std::exp(-_angularDrag * deltaTime);
+    if (dragFactor < 0.9f) dragFactor = 0.9f; // ’á‘¬‰ñ“]‚ðˆÛŽ‚·‚é
+    _angularVelocity *= dragFactor;
 }
 
 void DynamicBody::Release()
