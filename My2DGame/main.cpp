@@ -4,7 +4,6 @@
 #include "Timer.h"
 #include "PhysicsManager.h"
 #include "DebugManager.h"
-#include "GameDefine.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>

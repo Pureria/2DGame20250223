@@ -154,7 +154,6 @@
     <ClInclude Include="DebugManager.h" />
     <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="GameDefine.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="FillRect.h" />
     <ClInclude Include="PhysicsManager.h" />
