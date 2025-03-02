@@ -13,16 +13,16 @@ private:
 	bool _isDebugRender = false;
 
 	//床
-	//GameObject* floor;
-	//Rect* floorRect;
+	GameObject* floor;
+	Rect* floorRect;
 
 	//オブジェクト1
 	GameObject* obj1;
 	Rect* obj1Rect;
 
 	//オブジェクト2
-	//GameObject* obj2;
-	//Rect* obj2Rect;
+	GameObject* obj2;
+	Rect* obj2Rect;
 
 public:
 	GameApp();

@@ -43,14 +43,14 @@ public:
 	
 	GameObject* GetOwner();
 	sf::Vector2f GetVelocity() const;
+	float GetMass() const { return _mass; }
+	bool GetIsStatic() const { return _isStatic; }
 	
 	//慣性モーメントの取得
 	//矩形の慣性モーメントの計算
 	static float CalculateRectangleInteria(float mass, float width, float height) {return (1 / 12.0f) * mass * (width * width + height * height);}
-
-	//テスト用関数
+	
 	void ApplyTorque(float torque);
-
 	void AddForce(const sf::Vector2f& force);
 };
 

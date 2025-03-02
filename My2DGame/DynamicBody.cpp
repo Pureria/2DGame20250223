@@ -74,9 +74,6 @@ void DynamicBody::SystemUpdate()
 	angle += _angularVelocity * dt;
 	_owner->SetRotation(GetDegrees(angle)); //Šp“x‚ð“x‚É•ÏŠ·
 	_torque = 0;
-
-	//angularVelocity‚Ì•\Ž¦
-	DebugManager::LogInfo("angularVelocity: " + std::to_string(_angularVelocity));
 }
 
 void DynamicBody::Release()

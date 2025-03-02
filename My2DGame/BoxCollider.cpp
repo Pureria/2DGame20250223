@@ -50,7 +50,7 @@ void BoxCollider::SetCenterPosition(sf::Vector2f pos)
 }
 
 //OBBでの衝突判定
-bool BoxCollider::CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f& penetration) const
+bool BoxCollider::CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f& penetration, sf::Vector2f& contactPoint) const
 {
 	//それぞれOBBの回転軸を取得
 	std::vector<sf::Vector2f> axes = GetSeparatingAxes(other);
@@ -81,6 +81,17 @@ bool BoxCollider::CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f
 
 	//最もオーバーラップが小さい軸を押し出しベクトルとする
 	penetration = bestAxis * minOverlap;
+
+	// 衝突ポイントを計算
+	std::vector<sf::Vector2f> cornersA = GetTransformedCorners();
+	std::vector<sf::Vector2f> cornersB = other.GetTransformedCorners();
+	sf::Vector2f centerA = std::accumulate(cornersA.begin(), cornersA.end(), sf::Vector2f(0, 0)) / static_cast<float>(cornersA.size());
+	sf::Vector2f centerB = std::accumulate(cornersB.begin(), cornersB.end(), sf::Vector2f(0, 0)) / static_cast<float>(cornersB.size());
+	contactPoint = (centerA + centerB) * 0.5f;
+
+	//衝突したポイントの表示
+	//DebugManager::LogInfo( "contactPoint: " + std::to_string(contactPoint.x) + ", " + std::to_string(contactPoint.y));
+	
 	return true;
 }
 
@@ -154,8 +165,6 @@ sf::Vector2f BoxCollider::RotateVector(const sf::Vector2f& vec, float angle) con
 		vec.x * sinA + vec.y * cosA
 	);
 }
-
-
 
 void BoxCollider::OnCollision(GameObject* other)
 {

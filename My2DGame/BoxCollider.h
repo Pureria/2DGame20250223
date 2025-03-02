@@ -4,6 +4,7 @@
 #include <memory>
 #include <array>
 #include <unordered_map>
+#include <numeric>
 #include "Component.h"
 
 class GameObject; //ëOï˚êÈåæ
@@ -37,7 +38,7 @@ public:
 	void OnCollision(GameObject* other);
 	int AddCollisionHandler(CollisionCallback callback);
 	void RemoveCollisionHandler(int id);
-	bool CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f& penetration) const;
+	bool CalculatePenetrationOBB(const BoxCollider& other, sf::Vector2f& penetration, sf::Vector2f& contactPoint) const;
 	sf::Vector2f GetSize() const;
 	sf::Vector2f GetCenterPosition() const;
 	GameObject* GetOwner();

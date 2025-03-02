@@ -14,15 +14,16 @@ PhysicsManager::~PhysicsManager()
 void PhysicsManager::Update()
 {
     sf::Vector2f penetration;
+    sf::Vector2f contactPoint;
     // 衝突判定
     // 二重ループで全てのコライダーの組み合わせをチェック
     for (size_t i = 0; i < _colliders.size(); i++)
     {
         for (size_t j = i + 1; j < _colliders.size(); j++)
         {
-            if (_colliders[i]->CalculatePenetrationOBB(*_colliders[j], penetration))
+            if (_colliders[i]->CalculatePenetrationOBB(*_colliders[j], penetration, contactPoint))
             {
-                HandleCollision(_colliders[i]->GetOwner(), _colliders[j]->GetOwner(), penetration);
+                HandleCollision(_colliders[i]->GetOwner(), _colliders[j]->GetOwner(), penetration, contactPoint);
             }
         }
     }
@@ -59,7 +60,7 @@ bool PhysicsManager::Release()
     return true;
 }
 
-void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB, sf::Vector2f penetration)
+void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB, sf::Vector2f& penetration, sf::Vector2f& contactPoint)
 {
     auto bodyA = objA->GetComponent<DynamicBody>();
     auto bodyB = objB->GetComponent<DynamicBody>();
@@ -69,7 +70,7 @@ void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB, sf::Vec
     auto colliderB = objB->GetComponent<BoxCollider>();
     if(!colliderA || !colliderB) return;
 
-    /*
+    
     //押し出し処理
     float totalMass = bodyA->GetMass() + bodyB->GetMass();
     if (totalMass > 0)

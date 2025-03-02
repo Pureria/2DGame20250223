@@ -27,5 +27,5 @@ public:
     void RemoveCollider(std::shared_ptr<BoxCollider> collider);
 
     bool Release() override;
-    void HandleCollision(GameObject* objA, GameObject* objB, sf::Vector2f penetration);
+    void HandleCollision(GameObject* objA, GameObject* objB, sf::Vector2f& penetration, sf::Vector2f& contactPoint);
 };
