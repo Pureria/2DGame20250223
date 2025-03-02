@@ -26,7 +26,7 @@ bool GameApp::Awake()
 	*/
 
 	//オブジェクト1の作成
-	float mass = 1.0f;
+	float mass = 0.01f;
 	float boxInterial = DynamicBody::CalculateRectangleInteria(mass, 100, 100);
 	
 	obj1 = new GameObject(sf::Vector2f((windowSize.x * 0.5f), 50), sf::Vector2f(100, 100));
@@ -66,7 +66,7 @@ bool GameApp::Start()
 	if(obj1->TryGetComponent<DynamicBody>(dynamicBody))
 	{
 		//dynamicBody->SetAngularVelocity(-(rand() % 100), ForceMode::ADD);
-		dynamicBody->ApplyTorque(5000);
+		dynamicBody->ApplyTorque(1000);
 	}
 	return true;
 }

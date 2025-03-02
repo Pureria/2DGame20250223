@@ -8,6 +8,8 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
+const float MaxFrameRate = 60.0f;
+
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
@@ -21,12 +23,16 @@ int main() {
 	gameApp->Awake();
 	gameApp->Start();
 
+	float frameTime = 1.0f / MaxFrameRate;
+	float updateTime = -frameTime;
+	
 	//メインループ
 	while (WindowManager::Instance().IsOpen())
 	{		
 		//ウィンドウのイベントをチェック
 		if (!WindowManager::Instance().CheckWindowEvent()) break;
-
+		if(updateTime + frameTime > Timer::Instance().Elapsed()) continue;
+		updateTime = Timer::Instance().Elapsed();
 		//時間の更新
 		Timer::Instance().Update();
 		
@@ -44,7 +50,7 @@ int main() {
 		WindowManager::Instance().WindowUpdate();
 
 		//FPSの表示
-		DebugManager::LogInfo("FPS: " + std::to_string(1.0 / Timer::Instance().DeltaTime()));
+		//DebugManager::LogInfo("FPS: " + std::to_string(1.0 / Timer::Instance().DeltaTime()));
 	}
 
 	

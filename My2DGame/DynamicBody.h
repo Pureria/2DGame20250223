@@ -9,6 +9,7 @@
 class GameObject; //前方宣言
 const float GRAVITY = 9.8f;
 const float PI = 3.14159265f;
+const float Damping = 0.98f;
 
 class DynamicBody : public std::enable_shared_from_this<DynamicBody>, public Component
 {
@@ -57,15 +58,23 @@ inline GameObject* DynamicBody::GetOwner() { return _owner; }
 inline sf::Vector2f DynamicBody::GetVelocity() const { return _velocity; }
 
 //ラジアンの取得
-inline float DynamicBody::GetRadian(float angle) const
+inline float DynamicBody::GetRadian(float degrees) const
 {
-	return angle * PI / 180.0f;
+	//0～2πに変換
+	while (degrees < 0) degrees += 360;
+	while (degrees >= 360) degrees -= 360;
+	float angle = degrees * PI / 180.0f;
+	return angle;
 }
 
 //角度の取得
 inline float DynamicBody::GetDegrees(float radian) const
 {
-	return radian * 180.0f / PI;
+	float angle = radian * 180.0f / PI;
+	//0～360度に変換
+	while (angle < 0) angle += 360;
+	while (angle >= 360) angle -= 360;	
+	return angle;
 }
 
 //トルクの適用

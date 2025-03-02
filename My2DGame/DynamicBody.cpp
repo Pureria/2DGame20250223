@@ -56,17 +56,25 @@ void DynamicBody::SystemUpdate()
 
 	//速度の更新
 	_velocity += _acceleration * dt;
+	_velocity *= std::pow(Damping, dt); //速度の減衰
 	pos += _velocity * dt;
 	_owner->SetCenterPosition(pos);
 	_acceleration = sf::Vector2f(0, 0);
 
 	//角速度の更新
+	float frictionTorque = -0.1f * _angularVelocity; //摩擦トルク
+	_torque += frictionTorque;
 	float angularAcceleration = _torque / _inertia; //角加速度
 	_angularVelocity += angularAcceleration * dt;
+	_angularVelocity *= std::pow(Damping, dt); //角速度の減衰
+	if(std::abs(_angularVelocity) < 0.01f) _angularVelocity = 0.0f; //一定以下の速度は無視
 	float angle = GetRadian(_owner->GetRotation()); //角度をラジアンに変換
 	angle += _angularVelocity * dt;
 	_owner->SetRotation(GetDegrees(angle)); //角度を度に変換
 	_torque = 0;
+
+	//angularVelocityの表示
+	DebugManager::LogInfo("angularVelocity: " + std::to_string(_angularVelocity));
 }
 
 void DynamicBody::Release()
