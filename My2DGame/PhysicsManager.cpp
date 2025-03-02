@@ -90,30 +90,51 @@ void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB, sf::Vec
         }
     }
 
+    /*********************************衝突したオブジェクトの反発**********************/
+    //衝突時の情報を取得
+    sf::Vector2f contactPoint = (objA->GetCenterPosition() + objB->GetCenterPosition()) * 0.5f; //衝突点
     //衝突時の法線ベクトルを求める
     sf::Vector2f normal = objB->GetCenterPosition() - objA->GetCenterPosition();
     normal /= std::sqrt(normal.x * normal.x + normal.y * normal.y); //正規化
 
-    float elasticity = (bodyA->GetElasticity() + bodyB->GetElasticity()) * 0.5f;
-    float massA = bodyA->GetMass(), massB = bodyB->GetMass();
+    //弾性係数と質量の取得
+    float elasticity = (bodyA->GetElasticity() + bodyB->GetElasticity()) * 0.5f; //弾性係数の平均
+    float massA = bodyA->GetMass(), massB = bodyB->GetMass(); //質量
 
     //相対速度
-    sf::Vector2f relativeVelocity = bodyB->GetVelocity() - bodyA->GetVelocity();
-    float impulseMagunitude = -(1.0f + elasticity) * (relativeVelocity.x * normal.x + relativeVelocity.y * normal.y);
-    impulseMagunitude /= (1.0f / massA + 1.0f / massB);
+    sf::Vector2f relativeVelocity = bodyB->GetVelocity() - bodyA->GetVelocity();//２つのオブジェクトの速度差（相対速度）
 
-    sf::Vector2f impulse = impulseMagunitude * normal;
-    sf::Vector2f contactPoint = (objA->GetCenterPosition() + objB->GetCenterPosition()) * 0.5f;
+    //角速度と慣性モーメントの取得
+    float angularVelocityA = bodyA->GetAngularVelocity();
+    float angularVelocityB = bodyB->GetAngularVelocity();
+    float inertiaA = bodyA->GetInertia();
+    float inertiaB = bodyB->GetInertia();
+
+    //接触点での速度の計算
+    sf::Vector2f rA = contactPoint - objA->GetCenterPosition();
+    sf::Vector2f rB = contactPoint - objB->GetCenterPosition();
+    sf::Vector2f velocityA = bodyA->GetVelocity() + sf::Vector2f(-rA.y * angularVelocityA, rA.x * angularVelocityA);
+    sf::Vector2f velocityB = bodyB->GetVelocity() + sf::Vector2f(-rB.y * angularVelocityB, rB.x * angularVelocityB);
+    relativeVelocity = velocityB - velocityA;
+    
+    //インパルスの大きさを計算
+    float impulseMagunitude = -(1.0f + elasticity) * (relativeVelocity.x * normal.x + relativeVelocity.y * normal.y);
+    impulseMagunitude /= (1.0f / massA + 1.0f / massB + (rA.x * normal.y - rA.y * normal.x) * (rA.x * normal.y - rA.y * normal.x) / inertiaA + (rB.x * normal.y - rB.y * normal.x) * (rB.x * normal.y - rB.y * normal.x) / inertiaB); //インパルスの大きさ
+
+    sf::Vector2f impulse = impulseMagunitude * normal; //大きさと方向を持つインパルス
 
     // インパルスを適用
     if (!bodyA->GetIsStatic())
     {
         bodyA->ApplyImpulse(-impulse, contactPoint);
+        bodyA->ApplyAngularImpulse(-(rA.x * impulse.y - rA.y * impulse.x));
     }
     if (!bodyB->GetIsStatic())
     {
         bodyB->ApplyImpulse(impulse, contactPoint);
+        bodyB->ApplyAngularImpulse(rB.x * impulse.y - rB.y * impulse.x);
     }
+    /********************************************************************/
 
     //衝突時のコールバックを呼び出し
     colliderA->OnCollision(objB);

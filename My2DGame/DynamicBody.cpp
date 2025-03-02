@@ -71,6 +71,7 @@ void DynamicBody::SystemUpdate()
 
 	//ドラッグの適用
 	DragUpdate(deltaTime);
+	FrictionUpdate(deltaTime);
 	AngularDragUpdate(deltaTime);
 }
 
@@ -83,11 +84,22 @@ void DynamicBody::ApplyImpulse(sf::Vector2f impulse, sf::Vector2f contactPoint)
 	sf::Vector2f r = contactPoint - center; //回転中心からの距離
 	float torque = r.x * impulse.y - r.y * impulse.x; //トルク = r x F
 	_angularVelocity += torque / _momentOfInertia;
+
+	// 摩擦力の計算
+	float frictionCoefficient = 0.5f; // 摩擦係数（例）
+	sf::Vector2f frictionImpulse = -frictionCoefficient * impulse;
+	_velocity += frictionImpulse / _mass;
 }
 
 void DynamicBody::DragUpdate(float deltaTime)
 {
 	_velocity *= std::exp(-_drag * deltaTime);
+}
+
+void DynamicBody::FrictionUpdate(float deltaTime)
+{
+	float frictionCoefficient = 0.5f; // 摩擦係数（例）
+	_velocity *= std::exp(-frictionCoefficient * deltaTime);
 }
 
 void DynamicBody::AngularDragUpdate(float deltaTime)
@@ -156,4 +168,13 @@ void DynamicBody::SetElasticity(float elasticity)
 void DynamicBody::SetMass(float mass)
 {
 	_mass = mass;
+}
+
+//角速度の設定
+void DynamicBody::ApplyAngularImpulse(float angularImpulse)
+{
+	if(_momentOfInertia != 0)
+	{
+		_angularVelocity += angularImpulse / _momentOfInertia;		
+	}
 }

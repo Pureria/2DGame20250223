@@ -31,6 +31,7 @@ private:
 	sf::Vector2f _velocity;
 
 	void DragUpdate(float deltaTime);
+	void FrictionUpdate(float deltaTime);
 	void AngularDragUpdate(float deltaTime);
 
 public:
@@ -54,6 +55,7 @@ public:
 	void SetAngularDrag(float drag); //Šp‘¬“x‚ÌŒ¸Š—¦‚Ìİ’è
 	void SetElasticity(float elasticity);
 	void SetMass(float mass);
+	void ApplyAngularImpulse(float angularImpulse);
 
 	bool GetIsStatic() const;
 	float GetGravityScale() const;
@@ -62,6 +64,7 @@ public:
 	float GetAngularDrag() const; //Šp‘¬“x‚ÌŒ¸Š—¦‚Ìæ“¾
 	float GetElasticity() const;
 	float GetMass() const;
+	float GetInertia() const;
 	sf::Vector2f GetVelocity() const;
 	GameObject* GetOwner();
 };
@@ -75,3 +78,4 @@ inline bool DynamicBody::GetIsStatic() const { return _isStatic; }
 inline float DynamicBody::GetDrag() const { return _drag; }
 inline float DynamicBody::GetElasticity() const { return _elasticity; }
 inline float DynamicBody::GetMass() const { return _mass; }
+inline float DynamicBody::GetInertia() const { return _momentOfInertia; }
