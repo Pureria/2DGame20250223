@@ -8,74 +8,68 @@
 
 class GameObject; //前方宣言
 const float GRAVITY = 9.8f;
-
-//AddかSetなのかを区別するenum
-enum class ForceMode
-{
-	ADD,
-	SET
-};
+const float PI = 3.14159265f;
 
 class DynamicBody : public std::enable_shared_from_this<DynamicBody>, public Component
 {
 private:
+	bool _isStatic; //静的かどうか
+	
 	GameObject* _owner;
-	float _gravityScale;
-	float _drag;
-	float _angularDrag; //角速度の減衰率
-	float _angularVelocity; //角速度(度/秒)
-	float _momentOfInertia; //慣性モーメント
-	float _mass; //質量
-	float _elasticity; //弾性係数
-	bool _isStatic;
 	sf::Vector2f _velocity;
+	sf::Vector2f _acceleration;
+	
+	float _mass; //質量
+	float _inertia; //慣性モーメント
+	float _angularVelocity; //角速度
+	float _torque; //トルク
 
-	void DragUpdate(float deltaTime);
-	void FrictionUpdate(float deltaTime);
-	void AngularDragUpdate(float deltaTime);
-
+	float _gravityScale;
+	
+	float GetRadian(float degrees) const;
+	float GetDegrees(float radian) const;
 public:
 	DynamicBody(float gravityScale, GameObject* owner);
 	DynamicBody(float gravityScale, GameObject* owner, bool isStatic);
-	~DynamicBody();
+	DynamicBody(float gravityScale, GameObject* owner, bool isStatic, float mass, float inertia);
+	~DynamicBody() override;
 
 	void Initialize() override;
 	void DebugDraw() override;
 	void Update() override;
-	void Release() override;
-
 	void SystemUpdate();
-	void ApplyImpulse(sf::Vector2f impulse, sf::Vector2f contactPoint);
-
-	void SetGravityScale(float gravityScale);
-	void SetVelocity(sf::Vector2f velocity, ForceMode mode);
-	void SetAngularVelocity(float velocity, ForceMode mode); //角速度の設定
-	void SetIsGravityEnabled(bool isStatic);
-	void SetDrag(float drag);
-	void SetAngularDrag(float drag); //角速度の減衰率の設定
-	void SetElasticity(float elasticity);
-	void SetMass(float mass);
-	void ApplyAngularImpulse(float angularImpulse);
-
-	bool GetIsStatic() const;
-	float GetGravityScale() const;
-	float GetDrag() const;
-	float GetAngularVelocity() const; //角速度の取得
-	float GetAngularDrag() const; //角速度の減衰率の取得
-	float GetElasticity() const;
-	float GetMass() const;
-	float GetInertia() const;
-	sf::Vector2f GetVelocity() const;
+	void Release() override;
+	
 	GameObject* GetOwner();
+	sf::Vector2f GetVelocity() const;
+	
+	//慣性モーメントの取得
+	//矩形の慣性モーメントの計算
+	static float CalculateRectangleInteria(float mass, float width, float height) {return (1 / 12.0f) * mass * (width * width + height * height);}
+
+	//テスト用関数
+	void ApplyTorque(float torque);
+
+	void AddForce(const sf::Vector2f& force);
 };
 
-inline float DynamicBody::GetGravityScale() const { return _gravityScale; }
-inline sf::Vector2f DynamicBody::GetVelocity() const { return _velocity; }
-inline float DynamicBody::GetAngularVelocity() const { return _angularVelocity; }
-inline float DynamicBody::GetAngularDrag() const { return _angularDrag; }
 inline GameObject* DynamicBody::GetOwner() { return _owner; }
-inline bool DynamicBody::GetIsStatic() const { return _isStatic; }
-inline float DynamicBody::GetDrag() const { return _drag; }
-inline float DynamicBody::GetElasticity() const { return _elasticity; }
-inline float DynamicBody::GetMass() const { return _mass; }
-inline float DynamicBody::GetInertia() const { return _momentOfInertia; }
+inline sf::Vector2f DynamicBody::GetVelocity() const { return _velocity; }
+
+//ラジアンの取得
+inline float DynamicBody::GetRadian(float angle) const
+{
+	return angle * PI / 180.0f;
+}
+
+//角度の取得
+inline float DynamicBody::GetDegrees(float radian) const
+{
+	return radian * 180.0f / PI;
+}
+
+//トルクの適用
+inline void DynamicBody::ApplyTorque(float torque)
+{
+	_torque += torque;
+}

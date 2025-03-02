@@ -69,6 +69,7 @@ void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB, sf::Vec
     auto colliderB = objB->GetComponent<BoxCollider>();
     if(!colliderA || !colliderB) return;
 
+    /*
     //押し出し処理
     float totalMass = bodyA->GetMass() + bodyB->GetMass();
     if (totalMass > 0)
@@ -91,6 +92,7 @@ void PhysicsManager::HandleCollision(GameObject* objA, GameObject* objB, sf::Vec
     }
 
     /*********************************衝突したオブジェクトの反発**********************/
+    /*
     //衝突時の情報を取得
     sf::Vector2f contactPoint = (objA->GetCenterPosition() + objB->GetCenterPosition()) * 0.5f; //衝突点
     //衝突時の法線ベクトルを求める

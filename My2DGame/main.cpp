@@ -42,6 +42,9 @@ int main() {
 
 		//描画した内容をウィンドウに反映
 		WindowManager::Instance().WindowUpdate();
+
+		//FPSの表示
+		DebugManager::LogInfo("FPS: " + std::to_string(1.0 / Timer::Instance().DeltaTime()));
 	}
 
 	

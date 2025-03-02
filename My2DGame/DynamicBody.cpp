@@ -7,34 +7,31 @@
 DynamicBody::DynamicBody(float gravityScale, GameObject* owner) :
 	_owner(owner),
 	_gravityScale(gravityScale),
-	_velocity(0, 0),
 	_isStatic(false),
-	_drag(1.0f),
-	_angularDrag(1.0f),
-	_angularVelocity(0),
 	_mass(1.0f),
-	_elasticity(0.5f),
-	_momentOfInertia(1.0f)
-{	
-}
+	_inertia(1.0f),
+	_angularVelocity(0.0f),
+	_torque(0){}
 
 DynamicBody::DynamicBody(float gravityScale, GameObject* owner, bool isStatic) :
 	_owner(owner),
 	_gravityScale(gravityScale),
-	_velocity(0, 0),
 	_isStatic(isStatic),
-	_drag(1.0f),
-	_angularDrag(1.0f),
-	_angularVelocity(0),
 	_mass(1.0f),
-	_elasticity(0.5f),
-	_momentOfInertia(1.0f)
-{
-}
+	_inertia(1.0f),
+	_angularVelocity(0.0f),
+	_torque(0){}
 
-DynamicBody::~DynamicBody()
-{
-}
+DynamicBody::DynamicBody(float gravityScale, GameObject* owner, bool isStatic, float mass, float inertia) :
+	_owner(owner),
+	_gravityScale(gravityScale),
+	_isStatic(isStatic),
+	_mass(mass),
+	_inertia(inertia),
+	_angularVelocity(0.0f),
+	_torque(0){}
+
+DynamicBody::~DynamicBody() = default;
 
 void DynamicBody::Initialize()
 {
@@ -52,62 +49,24 @@ void DynamicBody::Update()
 
 void DynamicBody::SystemUpdate()
 {
-	if (_isStatic) return;
-
-	const float deltaTime = static_cast<float>(Timer::Instance().DeltaTime());
-
-	//重力を適用
-	_velocity.y += (GRAVITY * _gravityScale) * deltaTime;
-	
-	//オーナーの位置を更新
 	sf::Vector2f pos = _owner->GetCenterPosition();
-	pos += _velocity;
+	float dt = Timer::Instance().DeltaTime();
+	//重力を加算
+	AddForce(sf::Vector2f(0, GRAVITY * _gravityScale));
+
+	//速度の更新
+	_velocity += _acceleration * dt;
+	pos += _velocity * dt;
 	_owner->SetCenterPosition(pos);
+	_acceleration = sf::Vector2f(0, 0);
 
-	//回転を適用
-	float rotation = _owner->GetRotation();
-	rotation += _angularVelocity * deltaTime;
-	_owner->SetRotation(rotation);
-
-	//ドラッグの適用
-	DragUpdate(deltaTime);
-	FrictionUpdate(deltaTime);
-	AngularDragUpdate(deltaTime);
-}
-
-void DynamicBody::ApplyImpulse(sf::Vector2f impulse, sf::Vector2f contactPoint)
-{
-	_velocity += impulse / _mass;
-
-	//角速度の計算
-	sf::Vector2f center = _owner->GetCenterPosition();
-	sf::Vector2f r = contactPoint - center; //回転中心からの距離
-	float torque = r.x * impulse.y - r.y * impulse.x; //トルク = r x F
-	_angularVelocity += torque / _momentOfInertia;
-
-	// 摩擦力の計算
-	float frictionCoefficient = 0.5f; // 摩擦係数（例）
-	sf::Vector2f frictionImpulse = -frictionCoefficient * impulse;
-	_velocity += frictionImpulse / _mass;
-}
-
-void DynamicBody::DragUpdate(float deltaTime)
-{
-	_velocity *= std::exp(-_drag * deltaTime);
-}
-
-void DynamicBody::FrictionUpdate(float deltaTime)
-{
-	float frictionCoefficient = 0.5f; // 摩擦係数（例）
-	_velocity *= std::exp(-frictionCoefficient * deltaTime);
-}
-
-void DynamicBody::AngularDragUpdate(float deltaTime)
-{
-	//_angularVelocity *= std::exp(-_angularDrag * deltaTime);
-	float dragFactor = std::exp(-_angularDrag * deltaTime);
-    if (dragFactor < 0.9f) dragFactor = 0.9f; // 低速回転を維持する
-    _angularVelocity *= dragFactor;
+	//角速度の更新
+	float angularAcceleration = _torque / _inertia; //角加速度
+	_angularVelocity += angularAcceleration * dt;
+	float angle = GetRadian(_owner->GetRotation()); //角度をラジアンに変換
+	angle += _angularVelocity * dt;
+	_owner->SetRotation(GetDegrees(angle)); //角度を度に変換
+	_torque = 0;
 }
 
 void DynamicBody::Release()
@@ -116,65 +75,7 @@ void DynamicBody::Release()
 	PhysicsManager::Instance().RemoveDynamicBody(shared_from_this());
 }
 
-void DynamicBody::SetGravityScale(float gravityScale)
+void DynamicBody::AddForce(const sf::Vector2f& force)
 {
-	_gravityScale = gravityScale;
-}
-
-void DynamicBody::SetVelocity(sf::Vector2f velocity, ForceMode mode)
-{
-	if (mode == ForceMode::ADD)
-	{
-		_velocity += velocity;
-	}
-	else if (mode == ForceMode::SET)
-	{
-		_velocity = velocity;
-	}
-}
-
-void DynamicBody::SetIsGravityEnabled(bool isGravity)
-{
-	_isStatic = isGravity;
-}
-
-void DynamicBody::SetDrag(float drag)
-{
-	_drag = drag;
-}
-
-void DynamicBody::SetAngularDrag(float drag)
-{
-	_angularDrag = drag;
-}
-
-void DynamicBody::SetAngularVelocity(float velocity, ForceMode mode)
-{
-	if (mode == ForceMode::ADD)
-	{
-		_angularVelocity += velocity;
-	}
-	else if (mode == ForceMode::SET)
-	{
-		_angularVelocity = velocity;
-	}
-}
-
-void DynamicBody::SetElasticity(float elasticity)
-{
-	_elasticity = elasticity;
-}
-
-void DynamicBody::SetMass(float mass)
-{
-	_mass = mass;
-}
-
-//角速度の設定
-void DynamicBody::ApplyAngularImpulse(float angularImpulse)
-{
-	if(_momentOfInertia != 0)
-	{
-		_angularVelocity += angularImpulse / _momentOfInertia;		
-	}
+	_acceleration += force;
 }
