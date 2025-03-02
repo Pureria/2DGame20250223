@@ -49,6 +49,8 @@ void DynamicBody::Update()
 
 void DynamicBody::SystemUpdate()
 {
+	if(_isStatic) return;
+	
 	sf::Vector2f pos = _owner->GetCenterPosition();
 	float dt = Timer::Instance().DeltaTime();
 	//d—Í‚ğ‰ÁZ
